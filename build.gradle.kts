@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.findKaptConfiguration
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
+import org.jetbrains.kotlin.util.prefixIfNot
 
 plugins {
     id ("org.jetbrains.kotlin.jvm") apply(false)
@@ -12,9 +13,15 @@ plugins {
 
 allprojects {
     group = "no.statkart.matrikkel.auth"
-    version = "0.1.0-SNAPSHOT"
+    if (version == "unspecified") {
+        val versionQualifier =
+            (properties.getOrDefault("version.qualifier", "SNAPSHOT") as String?)
+                ?.takeIf { it.isNotBlank() }
+                ?.prefixIfNot("-")
+                ?: ""
+        version = "0.1.0$versionQualifier"
+    }
 }
-
 
 subprojects {
     repositories {
