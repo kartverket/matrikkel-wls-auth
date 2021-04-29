@@ -1,0 +1,18 @@
+plugins {
+    id 'war'
+}
+
+dependencies {
+//    compileOnly('javax.annotation:javax.annotation-api')
+//    compileOnly 'javax.servlet:javax.servlet-api'
+//    compileOnly('javax.enterprise:cdi-api')
+//    compileOnly 'javax.security.enterprise:javax.security.enterprise-api'
+//
+//    compileOnly 'org.apache.logging.log4j:log4j-api'
+
+    compileOnly(project(':api'))
+
+    runtimeOnly(project(':initializer-weblogic'))
+
+    compileOnly project(':example:shared')
+}

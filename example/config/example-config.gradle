@@ -1,0 +1,13 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+}
+
+dependencies {
+    compileOnly project(':client-api')
+    compileOnly('javax.enterprise:cdi-api')
+    compileOnly('com.nimbusds:nimbus-jose-jwt')
+    compileOnly 'javax.servlet:javax.servlet-api'
+
+    implementation 'org.apache.logging.log4j:log4j-api'
+}

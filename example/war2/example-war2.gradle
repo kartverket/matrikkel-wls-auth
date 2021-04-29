@@ -1,0 +1,7 @@
+plugins {
+    id 'war'
+}
+
+dependencies {
+    runtimeOnly(project(':initializer-weblogic'))
+}

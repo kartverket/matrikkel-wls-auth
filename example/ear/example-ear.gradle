@@ -1,0 +1,10 @@
+plugins {
+    id 'ear'
+}
+
+dependencies {
+    deploy project(path: ':example:war', configuration: 'archives')
+    deploy project(path: ':example:war2', configuration: 'archives')
+
+    earlib project(':example:shared')
+}
