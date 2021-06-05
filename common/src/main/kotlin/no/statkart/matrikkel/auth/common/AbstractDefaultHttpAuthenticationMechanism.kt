@@ -38,12 +38,13 @@ abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
                 validationResult.callerPrincipal.name,
                 validationResult.callerGroups
             )
-            else -> {
-                response.apply {
-                    reset()
-                    status = HttpServletResponse.SC_UNAUTHORIZED
+            CredentialValidationResult.Status.INVALID -> httpMessageContext.responseUnauthorized()
+            CredentialValidationResult.Status.NOT_VALIDATED, null -> {
+                if (httpMessageContext.isProtected) {
+                    httpMessageContext.responseUnauthorized()
+                } else {
+                    httpMessageContext.doNothing()
                 }
-                AuthenticationStatus.SEND_FAILURE
             }
         }
     }
