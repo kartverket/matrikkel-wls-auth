@@ -43,15 +43,11 @@ abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
                 validationResult.callerPrincipal.name,
                 validationResult.callerGroups
             )
-            CredentialValidationResult.Status.INVALID -> {
-                httpMessageContext.response.sendError(HttpServletResponse.SC_FORBIDDEN)
-                AuthenticationStatus.SEND_FAILURE
-            }
-            CredentialValidationResult.Status.NOT_VALIDATED, null -> {
+            else -> {
                 if (httpMessageContext.isProtected) {
                     if (httpMessageContext.messageInfo.map.containsKey(alreadyChallengedKey)) {
-                      response.sendError(HttpServletResponse.SC_FORBIDDEN)
-                      AuthenticationStatus.SEND_FAILURE
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN)
+                        AuthenticationStatus.SEND_FAILURE
                     } else if (authenticationChallenger != null && authenticationChallenger.challenge(request,response,httpMessageContext)) {
                         response.status = HttpServletResponse.SC_UNAUTHORIZED
                         response.sendError(response.status)
