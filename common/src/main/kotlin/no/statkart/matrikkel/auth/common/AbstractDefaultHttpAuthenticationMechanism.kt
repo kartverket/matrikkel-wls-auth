@@ -1,5 +1,6 @@
 package no.statkart.matrikkel.auth.common
 
+import no.statkart.matrikkel.auth.credential.AuthenticationChallenger
 import no.statkart.matrikkel.auth.credential.extractor.HttpCredentialExtractor
 import java.util.*
 import javax.enterprise.inject.Instance
@@ -13,8 +14,12 @@ import javax.servlet.http.HttpServletResponse
 
 abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
     private val identityStoreHandler: IdentityStoreHandler,
-    private val credentialExtractorInstance: Instance<HttpCredentialExtractor<*>>
+    private val credentialExtractorInstance: Instance<HttpCredentialExtractor<*>>,
+    authenticationChallengers: Instance<AuthenticationChallenger>
 ) : HttpAuthenticationMechanism {
+
+    private val alreadyChallengedKey = AbstractDefaultHttpAuthenticationMechanism::class.java.name + ".alreadyChallenged"
+    private val authenticationChallenger = authenticationChallengers.run { if (isUnsatisfied) null else get() }
 
     override fun validateRequest(
         request: HttpServletRequest,
@@ -38,10 +43,23 @@ abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
                 validationResult.callerPrincipal.name,
                 validationResult.callerGroups
             )
-            CredentialValidationResult.Status.INVALID -> httpMessageContext.responseUnauthorized()
+            CredentialValidationResult.Status.INVALID -> {
+                httpMessageContext.response.sendError(HttpServletResponse.SC_FORBIDDEN)
+                AuthenticationStatus.SEND_FAILURE
+            }
             CredentialValidationResult.Status.NOT_VALIDATED, null -> {
                 if (httpMessageContext.isProtected) {
-                    httpMessageContext.responseUnauthorized()
+                    if (httpMessageContext.messageInfo.map.containsKey(alreadyChallengedKey)) {
+                      response.sendError(HttpServletResponse.SC_FORBIDDEN)
+                      AuthenticationStatus.SEND_FAILURE
+                    } else if (authenticationChallenger != null && authenticationChallenger.challenge(request,response,httpMessageContext)) {
+                        response.status = HttpServletResponse.SC_UNAUTHORIZED
+                        response.sendError(response.status)
+                        httpMessageContext.messageInfo.map[alreadyChallengedKey] = true.toString()
+                        AuthenticationStatus.SEND_CONTINUE
+                    } else {
+                        httpMessageContext.responseUnauthorized()
+                    }
                 } else {
                     httpMessageContext.doNothing()
                 }
