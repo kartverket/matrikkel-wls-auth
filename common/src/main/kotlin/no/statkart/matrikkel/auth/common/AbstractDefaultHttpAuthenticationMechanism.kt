@@ -18,7 +18,6 @@ abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
     authenticationChallengers: Instance<AuthenticationChallenger>
 ) : HttpAuthenticationMechanism {
 
-    private val alreadyChallengedKey = AbstractDefaultHttpAuthenticationMechanism::class.java.name + ".alreadyChallenged"
     private val authenticationChallenger = authenticationChallengers.run { if (isUnsatisfied) null else get() }
 
     override fun validateRequest(
@@ -26,6 +25,9 @@ abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
         response: HttpServletResponse,
         httpMessageContext: HttpMessageContext
     ): AuthenticationStatus {
+        if (!httpMessageContext.isProtected) {
+            return httpMessageContext.doNothing()
+        }
         val messageInfoMap = Collections.unmodifiableMap(httpMessageContext.messageInfo.map)
         val credentialExtractors = credentialExtractorInstance.sortedBy { it.priority }.reversed()
         val validationResult = try {
@@ -38,28 +40,18 @@ abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
             credentialExtractors.forEach { credentialExtractorInstance.destroy(it) }
         }
 
-        return when (validationResult.status) {
-            CredentialValidationResult.Status.VALID -> httpMessageContext.notifyContainerAboutLogin(
+        return if (validationResult.status == CredentialValidationResult.Status.VALID) {
+            httpMessageContext.notifyContainerAboutLogin(
                 validationResult.callerPrincipal.name,
-                validationResult.callerGroups
-            )
-            else -> {
-                if (httpMessageContext.isProtected) {
-                    if (httpMessageContext.messageInfo.map.containsKey(alreadyChallengedKey)) {
-                        response.sendError(HttpServletResponse.SC_FORBIDDEN)
-                        AuthenticationStatus.SEND_FAILURE
-                    } else if (authenticationChallenger != null && authenticationChallenger.challenge(request,response,httpMessageContext)) {
-                        response.status = HttpServletResponse.SC_UNAUTHORIZED
-                        response.sendError(response.status)
-                        httpMessageContext.messageInfo.map[alreadyChallengedKey] = true.toString()
-                        AuthenticationStatus.SEND_CONTINUE
-                    } else {
-                        httpMessageContext.responseUnauthorized()
-                    }
-                } else {
-                    httpMessageContext.doNothing()
-                }
+                validationResult.callerGroups)
+        } else {
+            if (authenticationChallenger?.challenge(request,response,httpMessageContext) == true
+                && response.containsHeader("WWW-Authenticate")) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED)
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN)
             }
+            AuthenticationStatus.SEND_FAILURE
         }
     }
 
