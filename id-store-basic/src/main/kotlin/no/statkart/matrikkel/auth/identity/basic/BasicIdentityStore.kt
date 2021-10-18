@@ -18,7 +18,8 @@ import java.net.URI
 import java.nio.CharBuffer
 import java.security.MessageDigest
 import java.security.SecureRandom
-import java.util.*
+import java.util.Base64
+import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import javax.annotation.Priority
@@ -71,15 +72,13 @@ class BasicIdentityStore protected constructor(
             update(credential.caller.toByteArray())
             update(Charsets.UTF_8.encode(CharBuffer.wrap(credential.password.value)))
             update(salt)
-            digest().toString(Charsets.UTF_8)
+            Base64.getEncoder().encodeToString(digest())
         }
         val cachedTokens = map.get(credentialKey)
         if (cachedTokens != null) {
             val cachedValidationResult = cachedTokens.let { (accessToken, _) -> identityStores.validate(accessToken) }.takeIf { it?.status == CredentialValidationResult.Status.VALID }
             if (cachedValidationResult?.status == CredentialValidationResult.Status.VALID) {
                 return cachedValidationResult
-            } else {
-                map.remove(credentialKey, cachedTokens)
             }
         }
 
@@ -92,7 +91,7 @@ class BasicIdentityStore protected constructor(
                     }
                 }
                 refreshedTokens ?: fetchTokens(credential, this::fetchTokenResult).getOrHandle {
-                    logger.warn("Failed to fetch access token for {}:", credential.caller, it)
+                    logger.debug("Failed to fetch access token for {}:", credential.caller, it)
                     null
                 }
             }
