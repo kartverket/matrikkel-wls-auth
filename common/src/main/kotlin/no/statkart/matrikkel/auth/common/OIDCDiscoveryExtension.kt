@@ -12,7 +12,9 @@ class OIDCDiscoveryExtension : Extension {
     private val visitedClassLoaders : MutableSet<ClassLoader> = Collections.newSetFromMap(IdentityHashMap())
 
     fun processBean(@Observes pb: ProcessBean<*>) {
-        visitedClassLoaders.add(pb.bean.beanClass.classLoader)
+        if (pb.bean != null && pb.bean.beanClass != null && pb.bean.beanClass.classLoader != null) {
+            visitedClassLoaders.add(pb.bean.beanClass.classLoader)
+        }
     }
 
     fun afterBeanDiscovery(@Observes abd: AfterBeanDiscovery) {
