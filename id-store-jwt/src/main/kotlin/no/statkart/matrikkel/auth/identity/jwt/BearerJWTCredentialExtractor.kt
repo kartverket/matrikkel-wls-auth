@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 class BearerJWTCredentialExtractor : HttpCredentialExtractor<JsonWebStructureCredential> {
     override fun getCredential(request: HttpServletRequest, map: Map<*, *>): JsonWebStructureCredential? =
         request.getHeader("Authorization")?.let { credentials(it) }?.let {
-            JsonWebStructureCredential(it)
+            JsonWebStructureCredential(it, false)
         }
 
     companion object {

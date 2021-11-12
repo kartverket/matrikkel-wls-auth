@@ -74,7 +74,7 @@ class BasicIdentityStore protected constructor(
             update(salt)
             Base64.getEncoder().encodeToString(digest())
         }
-        val cachedTokens = map.get(credentialKey)
+        val cachedTokens = map[credentialKey]
         if (cachedTokens != null) {
             val cachedValidationResult = cachedTokens.let { (accessToken, _) -> identityStores.validate(accessToken) }.takeIf { it?.status == CredentialValidationResult.Status.VALID }
             if (cachedValidationResult?.status == CredentialValidationResult.Status.VALID) {
@@ -119,7 +119,7 @@ class BasicIdentityStore protected constructor(
                 fetch(credential)
             }.getOrHandle { throw IllegalAccessException("Unable to fetch token: $it") }
         }
-        val accessToken = !Either.catch { tokenResult.getString("access_token") }.map { JsonWebStructureCredential(it) }
+        val accessToken = !Either.catch { tokenResult.getString("access_token") }.map { JsonWebStructureCredential(it, true) }
         accessToken to tokenResult.getString("refresh_token", null)
     }
 

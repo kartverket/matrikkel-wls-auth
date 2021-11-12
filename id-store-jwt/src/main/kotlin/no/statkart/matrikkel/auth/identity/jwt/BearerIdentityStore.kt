@@ -51,7 +51,12 @@ class BearerIdentityStore @Inject constructor(
         val jwtContext = try {
             jwtConsumer.process(credential.compactSerialization)
         } catch (e: org.jose4j.jwt.consumer.InvalidJwtException) {
-            logger.warn("Authentication failed", e)
+            // Vi ønsker ikke å logge så mye for den normale flyten hvor et token som kommer fra et password grant er utgått
+            if (credential.fromPasswordGrant && e.errorDetails.size == 1 && e.hasExpired()) {
+                logger.debug("Authentication expired: {}", e.message)
+            } else {
+                logger.warn("Authentication failed", e)
+            }
             return CredentialValidationResult.INVALID_RESULT
         }
 
