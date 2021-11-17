@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    compileOnlyApi ("javax.enterprise:cdi-api")
+    compileOnlyApi ("jakarta.enterprise:jakarta.enterprise.cdi-api")
 }
 
 java {

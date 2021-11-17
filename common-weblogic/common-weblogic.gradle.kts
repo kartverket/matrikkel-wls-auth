@@ -28,10 +28,12 @@ val TaskContainer.shadowJar by tasks.creating(ShadowJar::class) {
     })
     archiveBaseName.set("mat-auth-${project.name}")
     archiveClassifier.set("")
+    // shadowJar tasken lager en jar med embedded dependencies fra
+    // weblogicEmbed konfigurasjonen. Det er noen ServiceLoader tjenester
+    // vi ikke vil ha med, siden de ikke helt virker med WLS, så
+    // vi filtrerer ut disse her.
     transformers.add(FilteringServiceFileTransformer(listOf(
-        "org.glassfish.soteria.cdi.CdiExtension",
-        "io.smallrye.config.inject.ConfigExtension",
-        "org.glassfish.soteria.servlet.SamRegistrationInstaller")))
+        "io.smallrye.config.inject.ConfigExtension")))
 }
 
 configurations {
@@ -70,15 +72,17 @@ gradle.serviceOf<SoftwareComponentFactory>().adhoc("weblogicComponent").apply {
 }
 
 dependencies {
-    api("javax.security.enterprise:javax.security.enterprise-api")
+    compileOnlyApi("jakarta.security.enterprise:jakarta.security.enterprise-api")
     api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api")
     api("org.eclipse.microprofile.config:microprofile-config-api")
 
     api(project(":api"))
     api(project(":common"))
 
+    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")
+
     val weblogicEmbed = configurations.weblogicEmbedImplementation
-    weblogicEmbed("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")
+
     weblogicEmbed("io.smallrye:smallrye-config:1.3.5")
 }
 

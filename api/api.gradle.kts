@@ -5,12 +5,12 @@ plugins {
 }
 
 dependencies {
-    compileOnlyApi("javax.servlet:javax.servlet-api")
-    compileOnlyApi("javax.annotation:javax.annotation-api")
-    compileOnlyApi("javax.enterprise:cdi-api")
-    compileOnlyApi("javax.security.auth.message:javax.security.auth.message-api")
+    compileOnlyApi("jakarta.servlet:jakarta.servlet-api")
+    compileOnlyApi("jakarta.annotation:jakarta.annotation-api")
+    compileOnlyApi("jakarta.enterprise:jakarta.enterprise.cdi-api")
+    compileOnlyApi("jakarta.security.auth.message:jakarta.security.auth.message-api")
 
-    compileOnlyApi("javax.security.enterprise:javax.security.enterprise-api")
+    compileOnlyApi("jakarta.security.enterprise:jakarta.security.enterprise-api")
 
     compileOnlyApi("org.eclipse.microprofile.config:microprofile-config-api")
 

@@ -5,9 +5,9 @@ plugins {
 
 dependencies {
     compileOnly project(':client-api')
-    compileOnly('javax.enterprise:cdi-api')
+    compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api')
     compileOnly('com.nimbusds:nimbus-jose-jwt')
-    compileOnly 'javax.servlet:javax.servlet-api'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
 
     implementation 'org.apache.logging.log4j:log4j-api'
 }

@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-//    compileOnly('javax.annotation:javax.annotation-api')
-//    compileOnly 'javax.servlet:javax.servlet-api'
-//    compileOnly('javax.enterprise:cdi-api')
-//    compileOnly 'javax.security.enterprise:javax.security.enterprise-api'
+//    compileOnly('jakarta.annotation:jakarta.annotation-api')
+//    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+//    compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api')
+//    compileOnly 'jakarta.security.enterprise:jakarta.security.enterprise-api'
 //
 //    compileOnly 'org.apache.logging.log4j:log4j-api'
 

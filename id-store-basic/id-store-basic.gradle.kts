@@ -7,8 +7,9 @@ plugins {
 dependencies {
     compileOnlyApi(project(":api"))
     compileOnly(project(":common"))
-    compileOnly("javax.ws.rs:javax.ws.rs-api")
+    compileOnly("jakarta.security.enterprise:jakarta.security.enterprise-api")
     compileOnly("com.google.guava:guava")
+    compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
 }
 
 java {
