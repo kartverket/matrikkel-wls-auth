@@ -29,6 +29,7 @@ import javax.inject.Inject
 import javax.interceptor.Interceptor
 import javax.json.JsonObject
 import javax.security.enterprise.credential.BasicAuthenticationCredential
+import javax.security.enterprise.credential.Credential
 import javax.security.enterprise.identitystore.CredentialValidationResult
 import javax.security.enterprise.identitystore.IdentityStore
 import javax.security.enterprise.identitystore.IdentityStoreHandler
@@ -108,9 +109,12 @@ class BasicIdentityStore protected constructor(
         }
     }
 
-    @Suppress("unused") // reflection in IdentityStore interface
-    fun validate(credential: BasicAuthenticationCredential): CredentialValidationResult {
-        return validate(BasicAuthenticationCredentialExt(credential.caller, credential.password))
+    override fun validate(credential: Credential?): CredentialValidationResult {
+        return when(credential) {
+            is BasicAuthenticationCredentialExt -> validate(credential)
+            is BasicAuthenticationCredential -> validate(BasicAuthenticationCredentialExt(credential.caller, credential.password))
+            else -> CredentialValidationResult.NOT_VALIDATED_RESULT
+        }
     }
 
     private suspend fun <A> fetchTokens(credential: A, fetch: suspend (A) -> Either<Response, JsonObject>) : Either<Throwable, Pair<JsonWebStructureCredential, String?>> = either {
