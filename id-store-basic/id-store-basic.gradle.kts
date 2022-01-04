@@ -8,7 +8,6 @@ dependencies {
     compileOnlyApi(project(":api"))
     compileOnly(project(":common"))
     compileOnly("jakarta.security.enterprise:jakarta.security.enterprise-api")
-    compileOnly("com.google.guava:guava")
     compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
 }
 
