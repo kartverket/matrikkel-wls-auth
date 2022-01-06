@@ -18,7 +18,7 @@ dependencies {
         api("io.arrow-kt:arrow-syntax:$arrowVersion")
         api("io.arrow-kt:arrow-meta:$arrowVersion")
 
-        api('org.apache.logging.log4j:log4j-api:2.14.0')
+        api('org.apache.logging.log4j:log4j-api:2.17.1')
 
         api 'org.eclipse.microprofile.config:microprofile-config-api:1.4'
 

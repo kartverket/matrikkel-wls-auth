@@ -7,8 +7,6 @@ dependencies {
 //    compileOnly 'jakarta.servlet:jakarta.servlet-api'
 //    compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api')
 //    compileOnly 'jakarta.security.enterprise:jakarta.security.enterprise-api'
-//
-//    compileOnly 'org.apache.logging.log4j:log4j-api'
 
     compileOnly(project(':api'))
 
