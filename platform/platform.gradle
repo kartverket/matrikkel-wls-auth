@@ -18,7 +18,14 @@ dependencies {
         api("io.arrow-kt:arrow-syntax:$arrowVersion")
         api("io.arrow-kt:arrow-meta:$arrowVersion")
 
-        api('org.apache.logging.log4j:log4j-api:2.17.1')
+        def log4jVersion = '2.17.1'
+        api("org.apache.logging.log4j:log4j-api:$log4jVersion")
+        api('org.apache.logging.log4j:log4j-to-slf4j') {
+            version {
+                strictly("[$log4jVersion, 3.0[")
+                prefer(log4jVersion)
+            }
+        }
 
         api 'org.eclipse.microprofile.config:microprofile-config-api:1.4'
 
