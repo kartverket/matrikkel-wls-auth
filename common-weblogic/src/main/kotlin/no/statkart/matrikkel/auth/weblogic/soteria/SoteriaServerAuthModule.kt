@@ -53,7 +53,7 @@ class SoteriaServerAuthModule(private val httpAuthenticationMechanism: javax.sec
     }
 
     @Throws(javax.security.auth.message.AuthException::class)
-    override fun secureResponse(messageInfo: javax.security.auth.message.MessageInfo, serviceSubject: Subject): javax.security.auth.message.AuthStatus {
+    override fun secureResponse(messageInfo: javax.security.auth.message.MessageInfo, serviceSubject: Subject?): javax.security.auth.message.AuthStatus {
         val msgContext: javax.security.enterprise.authentication.mechanism.http.HttpMessageContext = HttpMessageContextImpl(handler, messageInfo, null)
         return try {
             val status = httpAuthenticationMechanism

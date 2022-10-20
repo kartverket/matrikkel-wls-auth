@@ -16,8 +16,8 @@ import javax.security.enterprise.identitystore.IdentityStoreHandler
 
 abstract class AbstractSoteriaIdentityStoreHandler protected constructor() : IdentityStoreHandler {
 
-    protected lateinit var authenticationIdentityStores: List<IdentityStore>
-    protected lateinit var authorizationIdentityStores: List<IdentityStore>
+    private lateinit var authenticationIdentityStores: List<IdentityStore>
+    private lateinit var authorizationIdentityStores: List<IdentityStore>
     @field:Inject
     private lateinit var bm: BeanManager
     private val identityStoreInstances = IdentityHashMap<IdentityStore, Pair<Bean<IdentityStore>, CreationalContext<IdentityStore>>>()
@@ -61,9 +61,8 @@ abstract class AbstractSoteriaIdentityStoreHandler protected constructor() : Ide
         )
     }
 
-
     @PostConstruct
-    internal fun initializeInternal() {
+    open fun initializeInternal() {
         // Bruker BeanManager direkte, siden Instance<IdentityStore> ikke plukket opp alle, bug i Weld?
         @Suppress("UNCHECKED_CAST")
         val identityStoreBeans = bm.getBeans(IdentityStore::class.java).map { it as Bean<IdentityStore> }.toList()
@@ -93,7 +92,7 @@ abstract class AbstractSoteriaIdentityStoreHandler protected constructor() : Ide
     }
 
     @PreDestroy
-    internal fun cleanUpInternal() {
+    open fun cleanUpInternal() {
         val instances = identityStoreInstances.iterator()
         while (instances.hasNext()) {
             val (identityStore, reference) = instances.next()

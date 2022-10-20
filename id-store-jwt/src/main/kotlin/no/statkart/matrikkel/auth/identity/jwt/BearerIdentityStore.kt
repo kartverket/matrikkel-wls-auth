@@ -15,7 +15,7 @@ import javax.security.enterprise.identitystore.IdentityStore
 @ApplicationScoped
 class BearerIdentityStore @Inject constructor(
     jsonWebKeySet: org.jose4j.keys.resolvers.VerificationKeyResolver,
-    @ConfigProperty(name = AuthConfigKeys.ISSUER) issuer: String,
+    @ConfigProperty(name = AuthConfigKeys.ISSUER) issuer: String?,
     @ConfigProperty(name = AuthConfigKeys.AUD, defaultValue = "") audiences: List<String>
 ) : IdentityStore {
 
