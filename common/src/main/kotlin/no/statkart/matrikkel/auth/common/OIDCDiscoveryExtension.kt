@@ -35,7 +35,7 @@ class OIDCDiscoveryExtension : Extension {
             }
         }.distinct().toMap()
 
-        allClassLoaders.filter { (cl, uri) -> val parent = allClassLoaders.getOrDefault(cl.parent, null); parent == null || uri != parent }.forEach { (cl, uri) ->
+        allClassLoaders.forEach { (cl, uri) ->
             val config = configResolver.getConfig(cl)
             val newConfig = configResolver
                 .builder
