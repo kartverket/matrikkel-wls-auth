@@ -49,10 +49,14 @@ pipeline {
                         expression { fileExists('build/published.version') }
                     }
                     steps {
-                        script {
-                            def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
-                            if (publishedVersion != null && !publishedVersion.empty) {
-                                 tag(publishedVersion)
+                        withCredentials([usernamePassword(credentialsId: 'Github-app-matrikkel',
+                                                          usernameVariable: 'GITHUB_APP',
+                                                          passwordVariable: 'GITHUB_ACCESS_TOKEN')]) {
+                            script {
+                                def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
+                                if (publishedVersion != null && !publishedVersion.empty) {
+                                     tag(publishedVersion)
+                                }
                             }
                         }
                     }
