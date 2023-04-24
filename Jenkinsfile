@@ -33,13 +33,14 @@ pipeline {
         }
         stage('Publish and Tag') {
             when {
-                branch 'master'
+                branch '*'
             }
             stages {
                 stage('Publish') {
                     steps {
                         withGradle {
-                            sh './gradlew publish $GRADLE_ARGS --init-script gradle/mavenPublish.gradle'
+//                             sh './gradlew publish $GRADLE_ARGS --init-script gradle/mavenPublish.gradle'
+                            sh './gradlew $GRADLE_ARGS clean assemble'
                         }
                     }
                 }
@@ -48,14 +49,11 @@ pipeline {
                         expression { fileExists('build/published.version') }
                     }
                     steps {
-                        withCredentials([sshUserPrivateKey(credentialsId: 'Github-app-matrikkel', keyFileVariable: 'SSH')]) {
-                            withEnv(['GIT_SSH_COMMAND=ssh -i $SSH']) {
-                                script { 
-                                    def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
-                                    if (publishedVersion != null && !publishedVersion.empty) {
-                                        tag(publishedVersion)
-                                    }
-                                }
+                        script {
+                            def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
+                            if (publishedVersion != null && !publishedVersion.empty) {
+//                                         tag(publishedVersion)
+                                sh 'echo $publishedVersion'
                             }
                         }
                     }
