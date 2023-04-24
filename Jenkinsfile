@@ -18,7 +18,8 @@ pipeline {
             '-Dmaven.repo.local=$WORKSPACE/.m2/repository ' +
             '-Dorg.gradle.internal.publish.checksums.insecure=true ' +
             '-Dorg.gradle.console=plain'
-        GRADLE_ARGS = "-Pversion.qualifier=RC-build-$BUILD_NUMBER --stacktrace"
+//         GRADLE_ARGS = "-Pversion.qualifier=RC-build-$BUILD_NUMBER --stacktrace"
+        GRADLE_ARGS = "-Pversion.qualifier=RC-build-test --stacktrace"
 
         MAVEN_PUBLISH = credentials('MAVEN_DEPLOY_RELEASE_CANDIDATE')
     }
@@ -39,8 +40,7 @@ pipeline {
                 stage('Publish') {
                     steps {
                         withGradle {
-//                             sh './gradlew publish $GRADLE_ARGS --init-script gradle/mavenPublish.gradle'
-                            sh './gradlew $GRADLE_ARGS clean assemble'
+                            sh './gradlew publish $GRADLE_ARGS --init-script gradle/mavenPublish.gradle'
                         }
                     }
                 }
@@ -52,8 +52,7 @@ pipeline {
                         script {
                             def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
                             if (publishedVersion != null && !publishedVersion.empty) {
-//                                         tag(publishedVersion)
-                                sh 'echo $publishedVersion'
+                                 tag(publishedVersion)
                             }
                         }
                     }
