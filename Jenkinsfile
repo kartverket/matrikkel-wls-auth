@@ -48,7 +48,7 @@ pipeline {
                         expression { fileExists('build/published.version') }
                     }
                     steps {
-                        withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-bitbucket-bruker', keyFileVariable: 'SSH')]) {
+                        withCredentials([sshUserPrivateKey(credentialsId: 'Github-app-matrikkel', keyFileVariable: 'SSH')]) {
                             withEnv(['GIT_SSH_COMMAND=ssh -i $SSH']) {
                                 script { 
                                     def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
