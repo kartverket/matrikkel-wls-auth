@@ -36,25 +36,24 @@ pipeline {
                 branch 'master'
             }
             stages {
-                stage('Publish') {
-                    steps {
-                        withGradle {
-                            sh './gradlew publish $GRADLE_ARGS --init-script gradle/mavenPublish.gradle'
-                        }
-                    }
-                }
+//                 stage('Publish Til Nexus') {
+//                     steps {
+//                         withGradle {
+//                             sh './gradlew publish $GRADLE_ARGS --init-script gradle/mavenPublish.gradle'
+//                         }
+//                     }
+//                 }
                 stage('Tag') {
                     when {
                         expression { fileExists('build/published.version') }
                     }
                     steps {
-                        withCredentials([sshUserPrivateKey(credentialsId: 'Github-app-matrikkel', keyFileVariable: 'SSH')]) {
-                            withEnv(['GIT_SSH_COMMAND=ssh -i $SSH']) {
-                                script { 
-                                    def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
-                                    if (publishedVersion != null && !publishedVersion.empty) {
-                                        tag(publishedVersion)
-                                    }
+                        withCredentials([gitUsernamePassword(credentialsId: 'Github-app-matrikkel')]) {
+                            script {
+                                def publishedVersion = readFile(file: 'build/published.version', encoding: 'UTF-8')
+                                if (publishedVersion != null && !publishedVersion.empty) {
+                                    sh "git tag -a ${publishedVersion} -m \"Tagged ${publishedVersion}\""
+                                    sh "git push origin ${publishedVersion}"
                                 }
                             }
                         }
