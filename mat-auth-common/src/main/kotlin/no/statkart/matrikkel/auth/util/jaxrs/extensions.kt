@@ -4,12 +4,13 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import org.slf4j.LoggerFactory
-import javax.ws.rs.client.Invocation
-import javax.ws.rs.client.InvocationCallback
-import javax.ws.rs.core.Response
+import jakarta.ws.rs.client.Invocation
+import jakarta.ws.rs.client.InvocationCallback
+import jakarta.ws.rs.core.Response
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+
 
 
 @PublishedApi internal val logger = LoggerFactory.getLogger("no.statkart.matrikkel.auth.util.jaxrs.ext")
@@ -33,4 +34,3 @@ suspend inline fun <reified T> Response.readEntity(vararg responseStatuses: Resp
     } else {
         this.left()
     }
-

@@ -5,8 +5,8 @@ import no.statkart.matrikkel.auth.util.jaxrs.logger
 import org.eclipse.microprofile.config.spi.ConfigProviderResolver
 import java.net.URI
 import java.util.*
-import javax.enterprise.event.Observes
-import javax.enterprise.inject.spi.*
+import jakarta.enterprise.event.Observes
+import jakarta.enterprise.inject.spi.*
 
 class OIDCDiscoveryExtension : Extension {
     private val visitedClassLoaders : MutableSet<ClassLoader> = Collections.newSetFromMap(IdentityHashMap())

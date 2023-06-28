@@ -6,18 +6,20 @@ import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.Claims
 import org.jose4j.jwt.consumer.JwtConsumer
 import org.slf4j.LoggerFactory
-import javax.enterprise.context.ApplicationScoped
-import javax.inject.Inject
-import javax.security.enterprise.credential.Credential
-import javax.security.enterprise.identitystore.CredentialValidationResult
-import javax.security.enterprise.identitystore.IdentityStore
+import jakarta.enterprise.context.ApplicationScoped
+import jakarta.inject.Inject
+import jakarta.security.enterprise.credential.Credential
+import jakarta.security.enterprise.identitystore.CredentialValidationResult
+import jakarta.security.enterprise.identitystore.IdentityStore
 
 @ApplicationScoped
-class BearerIdentityStore @Inject constructor(
-    jsonWebKeySet: org.jose4j.keys.resolvers.VerificationKeyResolver,
+open class BearerIdentityStore @Inject constructor(
+    jsonWebKeySet: org.jose4j.keys.resolvers.VerificationKeyResolver?,
     @ConfigProperty(name = AuthConfigKeys.ISSUER) issuer: String?,
-    @ConfigProperty(name = AuthConfigKeys.AUD, defaultValue = "") audiences: List<String>
+    @ConfigProperty(name = AuthConfigKeys.AUD, defaultValue = "") audiences: List<String>?
 ) : IdentityStore {
+
+    constructor() : this(null, null, null)
 
     private val jwtConsumer: JwtConsumer = org.jose4j.jwt.consumer.JwtConsumerBuilder()
         .setVerificationKeyResolver(jsonWebKeySet)
@@ -32,7 +34,7 @@ class BearerIdentityStore @Inject constructor(
         .setAllowedClockSkewInSeconds(60)
         .setExpectedIssuer(true, issuer)
         .run {
-            if (audiences.isEmpty()) {
+            if (audiences!!.isEmpty()) {
                 setSkipDefaultAudienceValidation()
             } else {
                 setExpectedAudience(true, *audiences.toTypedArray())

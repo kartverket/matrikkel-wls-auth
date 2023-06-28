@@ -1,20 +1,20 @@
 package no.statkart.matrikkel.auth.ee.security.webapp;
 
 
+import jakarta.security.auth.message.config.AuthConfigFactory;
+import jakarta.security.auth.message.config.AuthConfigProvider;
 import no.statkart.matrikkel.auth.weblogic.soteria.SoteriaServerAuthModule;
 import org.glassfish.soteria.mechanisms.jaspic.DefaultAuthConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.spi.CDI;
-import javax.security.auth.message.config.AuthConfigFactory;
-import javax.security.auth.message.config.AuthConfigProvider;
-import javax.security.enterprise.authentication.mechanism.http.HttpAuthenticationMechanism;
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.security.enterprise.authentication.mechanism.http.HttpAuthenticationMechanism;
+import jakarta.servlet.ServletContainerInitializer;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 import java.util.Set;
 
 public class WeblogicSoteriaInitializer implements ServletContainerInitializer {

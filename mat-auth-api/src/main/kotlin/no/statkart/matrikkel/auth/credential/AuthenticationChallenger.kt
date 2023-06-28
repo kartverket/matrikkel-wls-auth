@@ -1,8 +1,8 @@
 package no.statkart.matrikkel.auth.credential
 
-import javax.security.enterprise.authentication.mechanism.http.HttpMessageContext
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.security.enterprise.authentication.mechanism.http.HttpMessageContext
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 interface AuthenticationChallenger {
     fun challenge(

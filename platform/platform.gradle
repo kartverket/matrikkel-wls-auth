@@ -1,0 +1,136 @@
+plugins {
+    id 'java-platform'
+    id 'maven-publish'
+}
+
+dependencies {
+    constraints {
+        api('com.nimbusds:nimbus-jose-jwt:9.1.5')
+        api('com.google.crypto.tink:tink:1.5.0')
+
+        api 'org.bitbucket.b_c:jose4j:0.7.4'
+
+        def arrowVersion = '0.11.0'
+        api("io.arrow-kt:arrow-core:$arrowVersion")
+        api("io.arrow-kt:arrow-fx:$arrowVersion")
+        api("io.arrow-kt:arrow-fx-coroutines:$arrowVersion")
+        api("io.arrow-kt:arrow-optics:$arrowVersion")
+        api("io.arrow-kt:arrow-syntax:$arrowVersion")
+        api("io.arrow-kt:arrow-meta:$arrowVersion")
+
+        def log4jVersion = '2.17.1'
+        api("org.apache.logging.log4j:log4j-api:$log4jVersion")
+        api('org.apache.logging.log4j:log4j-to-slf4j') {
+            version {
+                strictly("[$log4jVersion, 3.0[")
+                prefer(log4jVersion)
+            }
+        }
+
+        api 'org.eclipse.microprofile.config:microprofile-config-api:3.0'
+
+        api('org.eclipse.microprofile.jwt:microprofile-jwt-auth-api') {
+            because('CDI == 3.0')
+            version {
+                strictly('[2.0, 2.1[')
+                prefer('2.0')
+            }
+        }
+
+        //
+        // WebLogic 14 implementerer Java EE 8
+        //
+        api('jakarta.security.enterprise:jakarta.security.enterprise-api') {
+            because('TomEE 9')
+            version {
+                strictly('[2.0.0, 3.0.0[')
+                prefer('2.0.0')
+            }
+        }
+        api('jakarta.ws.rs:jakarta.ws.rs-api') {
+            because('TomEE 9')
+            version {
+                strictly('[3.0.0., 3.1[')
+                prefer('3.0.0')
+            }
+        }
+        api('jakarta.enterprise:jakarta.enterprise.cdi-api') {
+            because('TomEE 9')
+            version {
+                strictly('[3.0.0, 4.0.0[')
+                prefer('3.0.1')
+            }
+        }
+        api('jakarta.servlet:jakarta.servlet-api') {
+            because('TomEE 9')
+            version {
+                strictly('[5.0.0, 6.0[')
+                prefer('5.0.0')
+            }
+        }
+        api('jakarta.annotation:jakarta.annotation-api') {
+            because('WebLogic 14.1.1.0')
+            version {
+                strictly('[2.0.0, 2.1[')
+                prefer('2.0.0')
+            }
+        }
+        api('jakarta.ejb:jakarta.ejb-api') {
+            because('TomEE 9')
+            version {
+                strictly('[4.0.1, 5.0[')
+                prefer('4.0.1')
+            }
+        }
+        api('org.jboss.weld:weld-api') {
+            because('WebLogic 14.1.1.0')
+            version {
+                strictly('3.1.Final')
+            }
+        }
+        api('org.jboss.weld:weld-spi') {
+            because('WebLogic 14.1.1.0')
+            version {
+                strictly('3.1.Final')
+            }
+        }
+        api('com.google.guava:guava') {
+            because('WebLogic 14.1.1.0')
+            version {
+                strictly('[27.0.1-jre')
+                prefer('27.0.1-jre')
+            }
+        }
+        api('jakarta.json:jakarta.json-api') {
+            because('TomEE 9')
+            version {
+                strictly('[2.0.0, 3.0[')
+                prefer('2.0.2')
+            }
+        }
+        api('jakarta.security.auth.message:jakarta.security.auth.message-api') {
+            because('TomEE 9')
+            version {
+//                strictly('[2.0.0, 2.1[')
+                prefer('2.0.0-RC1')
+            }
+        }
+
+        // FInner ikke nyere versjoner av disse
+        api('jakarta.security.jacc:jakarta.security.jacc-api') {
+            because('WebLogic 14.1.1.0')
+            version {
+                strictly('[1.6.1, 2.0[')
+                prefer('1.6.1')
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        bom(MavenPublication) {
+            from components.javaPlatform
+        }
+    }
+}

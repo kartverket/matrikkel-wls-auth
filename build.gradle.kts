@@ -19,7 +19,7 @@ allprojects {
                 ?.takeIf { it.isNotBlank() }
                 ?.prefixIfNot("-")
                 ?: ""
-        version = "0.3.3$versionQualifier"
+        version = "0.4.0$versionQualifier"
     }
 }
 
@@ -45,7 +45,7 @@ subprojects {
 
         tasks.withType<KotlinCompile> {
             kotlinOptions {
-                jvmTarget = "11"
+                jvmTarget = JavaVersion.VERSION_11.toString()
             }
         }
     }
