@@ -12,11 +12,11 @@ import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.ExecutorService
 import javax.naming.InitialContext
-import javax.ws.rs.ProcessingException
-import javax.ws.rs.client.Invocation
-import javax.ws.rs.client.InvocationCallback
-import javax.ws.rs.core.MediaType
-import javax.ws.rs.core.Response
+import jakarta.ws.rs.ProcessingException
+import jakarta.ws.rs.client.Invocation
+import jakarta.ws.rs.client.InvocationCallback
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException

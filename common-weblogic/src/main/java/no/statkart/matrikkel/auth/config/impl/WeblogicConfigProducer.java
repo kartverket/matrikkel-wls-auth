@@ -1,24 +1,28 @@
 package no.statkart.matrikkel.auth.config.impl;
 
-import io.smallrye.config.SecuritySupport;
+//import io.smallrye.config.SecuritySupport;
+
 import io.smallrye.config.SmallRyeConfig;
 import io.smallrye.config.inject.ConfigProducer;
 import io.smallrye.config.inject.ConfigProducerUtil;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Specializes;
+import jakarta.enterprise.inject.spi.Annotated;
+import jakarta.enterprise.inject.spi.AnnotatedField;
+import jakarta.enterprise.inject.spi.AnnotatedParameter;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.Specializes;
-import javax.enterprise.inject.spi.Annotated;
-import javax.enterprise.inject.spi.AnnotatedField;
-import javax.enterprise.inject.spi.AnnotatedParameter;
-import javax.enterprise.inject.spi.InjectionPoint;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +30,13 @@ import java.util.Set;
 @ApplicationScoped
 @Specializes
 public class WeblogicConfigProducer extends ConfigProducer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(WeblogicConfigProducer.class);
+
+    @Inject
+    public WeblogicConfigProducer() {
+    }
+
     @Produces
     Config getConfig(InjectionPoint ip) {
         ClassLoader classLoader = getInjectionPointClassLoader(ip);
@@ -35,42 +46,42 @@ public class WeblogicConfigProducer extends ConfigProducer {
     @Dependent
     @Produces
     @ConfigProperty
-    String produceStringConfigProperty(InjectionPoint ip) {
+    protected String produceStringConfigProperty(InjectionPoint ip) {
         return getValue(ip, String.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Long getLongValue(InjectionPoint ip) {
+    protected Long getLongValue(InjectionPoint ip) {
         return getValue(ip, Long.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Integer getIntegerValue(InjectionPoint ip) {
+    protected Integer getIntegerValue(InjectionPoint ip) {
         return getValue(ip, Integer.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Float produceFloatConfigProperty(InjectionPoint ip) {
+    protected Float produceFloatConfigProperty(InjectionPoint ip) {
         return getValue(ip, Float.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Double produceDoubleConfigProperty(InjectionPoint ip) {
+    protected Double produceDoubleConfigProperty(InjectionPoint ip) {
         return getValue(ip, Double.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Boolean produceBooleanConfigProperty(InjectionPoint ip) {
+    protected Boolean produceBooleanConfigProperty(InjectionPoint ip) {
         return getValue(ip, Boolean.class, getConfig(ip));
     }
 
@@ -78,21 +89,21 @@ public class WeblogicConfigProducer extends ConfigProducer {
     @Produces
     @ConfigProperty
     <T> Optional<T> produceOptionalConfigValue(InjectionPoint injectionPoint) {
-        return ConfigProducerUtil.optionalConfigValue(injectionPoint, getConfig(injectionPoint));
+        return ConfigProducerUtil.getValue(injectionPoint, getConfig(injectionPoint));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
     <T> Set<T> producesSetConfigPropery(InjectionPoint ip) {
-        return ConfigProducerUtil.collectionConfigProperty(ip, getConfig(ip), new HashSet<>());
+        return ConfigProducerUtil.getValue(ip, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
     <T> List<T> producesListConfigPropery(InjectionPoint ip) {
-        return ConfigProducerUtil.collectionConfigProperty(ip, getConfig(ip), new ArrayList<>());
+        return ConfigProducerUtil.getValue(ip, getConfig(ip));
     }
 
     public static ClassLoader getInjectionPointClassLoader(InjectionPoint ip) {
@@ -103,9 +114,27 @@ public class WeblogicConfigProducer extends ConfigProducer {
         } else if (annotated instanceof AnnotatedField) {
             classLoader = ((AnnotatedField<?>) annotated).getDeclaringType().getJavaClass().getClassLoader();
         } else {
-            classLoader = SecuritySupport.getContextClassLoader();
+            // SecuritySupport er blitt package scope i nyere versjoner av smallrye-config
+            // Kopiert inn koden fra klassen slik at oppførselen skal være det samme
+            classLoader = getContextClassLoader();
         }
         return classLoader;
+    }
+
+    private static ClassLoader getContextClassLoader() {
+        if (System.getSecurityManager() == null) {
+            return Thread.currentThread().getContextClassLoader();
+        } else {
+            return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) () -> {
+                ClassLoader tccl = null;
+                try {
+                    tccl = Thread.currentThread().getContextClassLoader();
+                } catch (SecurityException e) {
+                    LOG.error("Exception while getting class loader", e);
+                }
+                return tccl;
+            });
+        }
     }
 
     public static <T> T getValue

@@ -3,13 +3,13 @@ package no.statkart.matrikkel.auth.ham
 import no.statkart.matrikkel.auth.common.AbstractDefaultHttpAuthenticationMechanism
 import no.statkart.matrikkel.auth.credential.AuthenticationChallenger
 import no.statkart.matrikkel.auth.credential.extractor.HttpCredentialExtractor
-import javax.annotation.Priority
-import javax.enterprise.context.ApplicationScoped
-import javax.enterprise.inject.Alternative
-import javax.enterprise.inject.Instance
-import javax.inject.Inject
-import javax.interceptor.Interceptor
-import javax.security.enterprise.identitystore.IdentityStoreHandler
+import jakarta.annotation.Priority
+import jakarta.enterprise.context.ApplicationScoped
+import jakarta.enterprise.inject.Alternative
+import jakarta.enterprise.inject.Instance
+import jakarta.inject.Inject
+import jakarta.interceptor.Interceptor
+import jakarta.security.enterprise.identitystore.IdentityStoreHandler
 
 @Suppress("NO_NOARG_CONSTRUCTOR_IN_SUPERCLASS")
 @ApplicationScoped

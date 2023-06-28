@@ -19,7 +19,7 @@ allprojects {
                 ?.takeIf { it.isNotBlank() }
                 ?.prefixIfNot("-")
                 ?: ""
-        version = "0.2.0$versionQualifier"
+        version = "0.3.0$versionQualifier"
     }
 }
 
@@ -47,7 +47,7 @@ subprojects {
 
         tasks.withType<KotlinCompile> {
             kotlinOptions {
-                jvmTarget = JavaVersion.VERSION_1_8.toString()
+                jvmTarget = JavaVersion.VERSION_11.toString()
             }
         }
     }
@@ -72,8 +72,8 @@ subprojects {
 
     plugins.withType<JavaBasePlugin> {
         configure<JavaPluginConvention> {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
             afterEvaluate {
                 sourceSets.filter { it.name != TEST_SOURCE_SET_NAME }.forEach { sourceSet ->
                     //

@@ -79,11 +79,11 @@ dependencies {
     api(project(":api"))
     api(project(":common"))
 
-    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")
+    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:2.0.1")
 
     val weblogicEmbed = configurations.weblogicEmbedImplementation
 
-    weblogicEmbed("io.smallrye:smallrye-config:1.3.5")
+    weblogicEmbed("io.smallrye.config:smallrye-config:3.2.0")
 }
 
 tasks {

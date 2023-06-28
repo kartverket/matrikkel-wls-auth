@@ -3,20 +3,18 @@ package no.statkart.matrikkel.auth.common
 import arrow.core.*
 import arrow.core.extensions.applicativeNel
 import arrow.fx.coroutines.*
+import jakarta.json.JsonObject
+import jakarta.ws.rs.client.ClientBuilder
+import jakarta.ws.rs.client.WebTarget
+import jakarta.ws.rs.core.MediaType
+import jakarta.ws.rs.core.Response
 import no.statkart.matrikkel.auth.credential.AuthConfigKeys
 import no.statkart.matrikkel.auth.util.jaxrs.readEntity
-import no.statkart.matrikkel.auth.util.jaxrs.suspend
 import org.apache.logging.log4j.LogManager
 import org.eclipse.microprofile.config.spi.ConfigSource
 import java.net.URI
 import java.time.Instant
-import javax.json.JsonObject
-import javax.ws.rs.client.ClientBuilder
-import javax.ws.rs.client.WebTarget
-import javax.ws.rs.core.MediaType
-import javax.ws.rs.core.Response
 import kotlin.collections.set
-import kotlin.coroutines.CoroutineContext
 
 class OIDCDiscovery(uri: URI, private val env: Environment = Environment(IOPool)) : ConfigSource {
 
