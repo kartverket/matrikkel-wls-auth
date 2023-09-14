@@ -1,0 +1,21 @@
+root = true
+
+[*]
+charset = utf-8
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+
+[*.java]
+ij_java_class_count_to_use_import_on_demand = 9999
+ij_java_names_count_to_use_import_on_demand = 9999
+ij_java_packages_to_use_import_on_demand = java.awt.*,javax.swing.*
+
+[*.kt]
+ij_kotlin_name_count_to_use_star_import = 9999
+ij_kotlin_name_count_to_use_star_import_for_members = 9999
+ij_kotlin_packages_to_use_import_on_demand = java.awt.*,javax.swing.*
+
+[{*.yml,*.yaml}]
+indent_size = 2
+indent_style = space
