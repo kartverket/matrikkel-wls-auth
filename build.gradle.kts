@@ -55,7 +55,7 @@ subprojects {
     //
     // Legg til en compileOnlyApi configuration
     plugins.withType<JavaLibraryPlugin> {
-        configure<JavaPluginConvention> {
+        configure<JavaPluginExtension> {
             sourceSets.matching { it.name != TEST_SOURCE_SET_NAME }.all {
                 val compileOnly = configurations[compileOnlyConfigurationName]
                 val compileOnlyApi = configurations.maybeCreate(compileOnly.name + "Api").apply {
@@ -71,7 +71,7 @@ subprojects {
     }
 
     plugins.withType<JavaBasePlugin> {
-        configure<JavaPluginConvention> {
+        configure<JavaPluginExtension> {
             sourceCompatibility = JavaVersion.VERSION_1_8
             targetCompatibility = JavaVersion.VERSION_1_8
             afterEvaluate {
