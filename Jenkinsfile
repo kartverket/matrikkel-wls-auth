@@ -13,9 +13,7 @@ pipeline {
     }
 
     environment {
-        GRADLE_USER_HOME = "$WORKSPACE/.gradle"
         GRADLE_OPTS = '-Dorg.gradle.daemon=false ' +
-            '-Dmaven.repo.local=$WORKSPACE/.m2/repository ' +
             '-Dorg.gradle.internal.publish.checksums.insecure=true ' +
             '-Dorg.gradle.console=plain'
         GRADLE_ARGS = "-Pversion.qualifier=RC-build-$BUILD_NUMBER --stacktrace"
