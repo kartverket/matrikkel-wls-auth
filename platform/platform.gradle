@@ -97,7 +97,7 @@ dependencies {
         api('com.google.guava:guava') {
             because('WebLogic 14.1.1.0')
             version {
-                strictly('[27.0.1-jre')
+                strictly('[27.0.1-jre,)')
                 prefer('27.0.1-jre')
             }
         }
