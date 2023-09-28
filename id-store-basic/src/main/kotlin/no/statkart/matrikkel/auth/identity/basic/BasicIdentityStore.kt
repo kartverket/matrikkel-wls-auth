@@ -12,8 +12,8 @@ import no.statkart.matrikkel.auth.credential.BasicAuthenticationCredentialExt
 import no.statkart.matrikkel.auth.credential.JsonWebStructureCredential
 import no.statkart.matrikkel.auth.util.jaxrs.readEntity
 import no.statkart.matrikkel.auth.util.jaxrs.suspend
-import org.apache.logging.log4j.LogManager
 import org.eclipse.microprofile.config.inject.ConfigProperty
+import org.slf4j.LoggerFactory
 import java.net.URI
 import java.nio.CharBuffer
 import java.security.MessageDigest
@@ -154,7 +154,7 @@ class BasicIdentityStore protected constructor(
 
 
     companion object {
-        private val logger = LogManager.getLogger(this::class.java.enclosingClass)
+        private val logger = LoggerFactory.getLogger(this::class.java.enclosingClass)
         private val client = ClientBuilder.newClient()
     }
 }

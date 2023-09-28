@@ -2,10 +2,9 @@ package no.statkart.matrikkel.auth.ee.security.webapp;
 
 
 import no.statkart.matrikkel.auth.weblogic.soteria.SoteriaServerAuthModule;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.glassfish.soteria.mechanisms.jaspic.DefaultAuthConfigProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.CDI;
@@ -19,7 +18,7 @@ import javax.servlet.ServletContextListener;
 import java.util.Set;
 
 public class WeblogicSoteriaInitializer implements ServletContainerInitializer {
-    private static final Logger logger = LogManager.getLogger(WeblogicSoteriaInitializer.class);
+    private static final Logger logger = LoggerFactory.getLogger(WeblogicSoteriaInitializer.class);
 
     @Override
     public void onStartup(Set<Class<?>> c, ServletContext ctx) {
@@ -50,9 +49,9 @@ public class WeblogicSoteriaInitializer implements ServletContainerInitializer {
                         LAYER,
                         appContext,
                         "Java EE Security (Soteria/WebLogic) " + appContext);
-                logger.info(() -> new StringFormattedMessage("Java EE Security (Soteria) enabled for %s", appContext));
+                logger.info("Java EE Security (Soteria) enabled for {}", appContext);
             } else {
-                logger.warn(() -> new StringFormattedMessage("Java EE Security (Soteria) disabled: No HttpAuthenticationMechanisms found for %s", appContext));
+                logger.warn("Java EE Security (Soteria) disabled: No HttpAuthenticationMechanisms found for {}", appContext);
             }
         }
 
@@ -62,18 +61,18 @@ public class WeblogicSoteriaInitializer implements ServletContainerInitializer {
             if (authConfigProvider != null) {
                 if (authConfigProvider == AuthConfigFactory.getFactory().getConfigProvider(LAYER, appContext, null)) {
                     AuthConfigFactory.getFactory().registerConfigProvider(null, LAYER, appContext, null);
-                    logger.info(() -> new StringFormattedMessage("Java EE Security (Soteria) cleanup: Servlet context %s destroyed", appContext));
+                    logger.info("Java EE Security (Soteria) cleanup: Servlet context {} destroyed", appContext);
                 } else {
-                    logger.warn(() -> new StringFormattedMessage(
-                            "Java EE Security (Soteria) cleanup failed: Servlet context %s destroyed - JASPIC had an unexpected %s registered",
-                            appContext,
-                            AuthConfigProvider.class.getName()));
+                    logger.warn(
+                        "Java EE Security (Soteria) cleanup failed: Servlet context {} destroyed - JASPIC had an unexpected {} registered",
+                        appContext,
+                        AuthConfigProvider.class.getName());
                 }
                 authConfigProvider = null;
             }
             if (httpAuthenticationMechanism != null) {
                 httpAuthenticationMechanisms.destroy(httpAuthenticationMechanism);
-                logger.debug(() -> new StringFormattedMessage("Java EE Security (Soteria) cleanup: HttpAuthenticationMechanism destroyed", appContext));
+                logger.debug("Java EE Security (Soteria) cleanup: HttpAuthenticationMechanism {} destroyed", appContext);
                 httpAuthenticationMechanism = null;
             }
         }

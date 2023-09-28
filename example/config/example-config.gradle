@@ -9,5 +9,5 @@ dependencies {
     compileOnly('com.nimbusds:nimbus-jose-jwt')
     compileOnly 'jakarta.servlet:jakarta.servlet-api'
 
-    implementation 'org.apache.logging.log4j:log4j-api'
+    implementation 'org.slf4j:slf4j-api'
 }
