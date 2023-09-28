@@ -1,7 +1,7 @@
 package stuff;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Model;
@@ -13,7 +13,7 @@ import javax.inject.Named;
 @Model
 @Named("something")
 public class SomeBean {
-    private static final Logger logger = LogManager.getLogger(SomeBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(SomeBean.class);
 
     private BeanManager bm;
 
@@ -26,6 +26,7 @@ public class SomeBean {
     SomeBean() {}
 
     public String getFoo() {
+        logger.info("What's meaning of life?");
         return "42";
     }
 }

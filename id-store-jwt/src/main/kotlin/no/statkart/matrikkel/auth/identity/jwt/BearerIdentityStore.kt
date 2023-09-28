@@ -1,11 +1,11 @@
 package no.statkart.matrikkel.auth.identity.jwt
 
-import no.statkart.matrikkel.auth.credential.JsonWebStructureCredential
 import no.statkart.matrikkel.auth.credential.AuthConfigKeys
-import org.apache.logging.log4j.LogManager
+import no.statkart.matrikkel.auth.credential.JsonWebStructureCredential
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.Claims
 import org.jose4j.jwt.consumer.JwtConsumer
+import org.slf4j.LoggerFactory
 import javax.enterprise.context.ApplicationScoped
 import javax.inject.Inject
 import javax.security.enterprise.credential.Credential
@@ -76,6 +76,6 @@ class BearerIdentityStore @Inject constructor(
     }
 
     companion object {
-        private val logger = LogManager.getLogger(this::class.java.enclosingClass)
+        private val logger = LoggerFactory.getLogger(this::class.java.enclosingClass)
     }
 }

@@ -1,13 +1,22 @@
 package no.statkart.matrikkel.auth.common
 
-import arrow.core.*
+import arrow.core.Either
+import arrow.core.Nel
+import arrow.core.Validated
+import arrow.core.ValidatedOf
 import arrow.core.extensions.applicativeNel
-import arrow.fx.coroutines.*
+import arrow.core.fix
+import arrow.core.getOrHandle
+import arrow.core.identity
+import arrow.fx.coroutines.Environment
+import arrow.fx.coroutines.IOPool
+import arrow.fx.coroutines.Schedule
+import arrow.fx.coroutines.milliseconds
+import arrow.fx.coroutines.retry
 import no.statkart.matrikkel.auth.credential.AuthConfigKeys
 import no.statkart.matrikkel.auth.util.jaxrs.readEntity
-import no.statkart.matrikkel.auth.util.jaxrs.suspend
-import org.apache.logging.log4j.LogManager
 import org.eclipse.microprofile.config.spi.ConfigSource
+import org.slf4j.LoggerFactory
 import java.net.URI
 import java.time.Instant
 import javax.json.JsonObject
@@ -16,7 +25,6 @@ import javax.ws.rs.client.WebTarget
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 import kotlin.collections.set
-import kotlin.coroutines.CoroutineContext
 
 class OIDCDiscovery(uri: URI, private val env: Environment = Environment(IOPool)) : ConfigSource {
 
@@ -76,7 +84,7 @@ class OIDCDiscovery(uri: URI, private val env: Environment = Environment(IOPool)
 
     companion object {
         const val LAST_UPDATE_CONFIG = "matrikkel.oauth.discovery.last_update"
-        private val logger = LogManager.getLogger(this::class.java.enclosingClass)
+        private val logger = LoggerFactory.getLogger(this::class.java.enclosingClass)
         private val client = ClientBuilder.newBuilder().build()
 
         private suspend fun propertyMapFromMetadataJson(json: JsonObject): Either<Throwable, Map<String, String>> = Validated
