@@ -1,9 +1,7 @@
 pluginManagement {
     repositories {
         mavenLocal()
-        maven {
-            setUrl("https://nexus.statkart.no/repository/public/")
-        }
+        gradlePluginPortal()
     }
 
     plugins {

@@ -26,9 +26,7 @@ allprojects {
 subprojects {
     repositories {
         mavenLocal()
-        maven {
-            setUrl("https://nexus.statkart.no/repository/public/")
-        }
+        mavenCentral()
     }
 
     plugins.withId("org.jetbrains.kotlin.jvm")  {
