@@ -7,7 +7,6 @@ import arrow.core.ValidatedOf
 import arrow.core.extensions.applicativeNel
 import arrow.core.fix
 import arrow.core.getOrHandle
-import arrow.core.identity
 import arrow.fx.coroutines.Environment
 import arrow.fx.coroutines.IOPool
 import arrow.fx.coroutines.Schedule
@@ -109,17 +108,7 @@ class OIDCDiscovery(uri: URI, private val env: Environment = Environment(IOPool)
     }
 }
 
-
-// TODO: Flytt til passende sted
-inline suspend fun <E : Nel<out Throwable>, A> ValidatedOf<E, A>.getOrThrow() : A =
-    toEitherSupressed().fold({ throw it}, ::identity)
-
 // TODO: Flytt til passende sted
 inline fun <E : Throwable, A> ValidatedOf<Nel<out E>, A>.toEitherSupressed(f: () -> E): Either<E, A> = fix().mapLeft { ts ->
     ts.singleOrNull() ?: ts.fold(f()) { acc, e -> acc.apply { addSuppressed(e) } }
 }.toEither()
-
-// TODO: Flytt til passende sted
-inline fun <A> ValidatedOf<Nel<out Throwable>, A>.toEitherSupressed() : Either<Throwable, A> = toEitherSupressed { IllegalStateException("Multiple validations failed")}
-
-
