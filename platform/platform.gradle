@@ -51,7 +51,7 @@ dependencies {
             because('WebLogic 14.1.1.0')
             version {
                 strictly('[2.0.1, 3.0[')
-                prefer('2.0.1')
+                prefer('2.0.2')
             }
         }
         api('jakarta.servlet:jakarta.servlet-api') {
