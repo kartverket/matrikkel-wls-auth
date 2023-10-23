@@ -45,7 +45,7 @@ subprojects {
 
         tasks.withType<KotlinCompile> {
             kotlinOptions {
-                jvmTarget = JavaVersion.VERSION_1_8.toString()
+                jvmTarget = "11"
             }
         }
     }
@@ -70,8 +70,8 @@ subprojects {
 
     plugins.withType<JavaBasePlugin> {
         configure<JavaPluginExtension> {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
             afterEvaluate {
                 sourceSets.filter { it.name != TEST_SOURCE_SET_NAME }.forEach { sourceSet ->
                     //

@@ -9,16 +9,20 @@ pipeline {
     }
 
     tools {
-        jdk 'Java 8 Latest'
+        jdk 'Java 11 Latest'
     }
 
     environment {
         GRADLE_OPTS = '-Dorg.gradle.daemon=false ' +
             '-Dorg.gradle.internal.publish.checksums.insecure=true ' +
             '-Dorg.gradle.console=plain'
-        GRADLE_ARGS = "-Pversion.qualifier=RC-build-$BUILD_NUMBER --stacktrace"
 
+        GRADLE_ARGS = "-Pversion.qualifier=RC-build-$BUILD_NUMBER --stacktrace"
         MAVEN_PUBLISH = credentials('MAVEN_DEPLOY_RELEASE_CANDIDATE')
+
+//manuel publish bruk:
+//        GRADLE_ARGS = "-Pversion.qualifier= --stacktrace"
+//        MAVEN_PUBLISH = credentials('MAVEN_DEPLOY_RELEASES')
     }
 
     stages {
