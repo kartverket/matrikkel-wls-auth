@@ -1,6 +1,5 @@
 package no.statkart.matrikkel.auth.config.impl;
 
-import io.smallrye.config.SecuritySupport;
 import io.smallrye.config.SmallRyeConfig;
 import io.smallrye.config.inject.ConfigProducer;
 import io.smallrye.config.inject.ConfigProducerUtil;
@@ -27,9 +26,13 @@ import java.util.Set;
 @Specializes
 public class WeblogicConfigProducer extends ConfigProducer {
     @Produces
-    Config getConfig(InjectionPoint ip) {
+    static Config getConfig(InjectionPoint ip) {
         ClassLoader classLoader = getInjectionPointClassLoader(ip);
-        return ConfigProvider.getConfig(classLoader);
+        if (classLoader != null) {
+            return ConfigProvider.getConfig(classLoader);
+        } else {
+            return ConfigProvider.getConfig();
+        }
     }
 
     @Dependent
@@ -84,29 +87,31 @@ public class WeblogicConfigProducer extends ConfigProducer {
     @Dependent
     @Produces
     @ConfigProperty
-    <T> Set<T> producesSetConfigPropery(InjectionPoint ip) {
+    <T> Set<T> producesSetConfigProperty(InjectionPoint ip) {
         return ConfigProducerUtil.collectionConfigProperty(ip, getConfig(ip), new HashSet<>());
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    <T> List<T> producesListConfigPropery(InjectionPoint ip) {
+    <T> List<T> producesListConfigProperty(InjectionPoint ip) {
         return ConfigProducerUtil.collectionConfigProperty(ip, getConfig(ip), new ArrayList<>());
     }
 
-    public static ClassLoader getInjectionPointClassLoader(InjectionPoint ip) {
+    /**
+     * @return NB: Callers should not leak this Classloader
+     */
+    private static ClassLoader getInjectionPointClassLoader(InjectionPoint ip) {
         Annotated annotated = ip.getAnnotated();
-        ClassLoader classLoader;
         if (annotated instanceof AnnotatedParameter) {
-            classLoader = ((AnnotatedParameter<?>) annotated).getDeclaringCallable().getDeclaringType().getJavaClass().getClassLoader();
+            return ((AnnotatedParameter<?>) annotated).getDeclaringCallable().getDeclaringType().getJavaClass().getClassLoader();
         } else if (annotated instanceof AnnotatedField) {
-            classLoader = ((AnnotatedField<?>) annotated).getDeclaringType().getJavaClass().getClassLoader();
+            return ((AnnotatedField<?>) annotated).getDeclaringType().getJavaClass().getClassLoader();
         } else {
-            classLoader = SecuritySupport.getContextClassLoader();
+            return null;
         }
-        return classLoader;
     }
+
 
     public static <T> T getValue
             (InjectionPoint injectionPoint, Class<T> target, Config config) {
