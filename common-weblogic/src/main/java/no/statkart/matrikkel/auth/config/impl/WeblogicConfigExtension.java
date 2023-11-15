@@ -20,7 +20,6 @@ import io.smallrye.config.inject.ConfigException;
 import io.smallrye.config.inject.ConfigInjectionBean;
 import io.smallrye.config.inject.ConfigProducer;
 import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.event.Observes;
@@ -90,11 +89,9 @@ public class WeblogicConfigExtension implements Extension {
 
     public void validate(@Observes AfterDeploymentValidation adv) {
 
-
         for (InjectionPoint injectionPoint : injectionPoints) {
             Type type = injectionPoint.getType();
-            ClassLoader injectionPointClassLoader = WeblogicConfigProducer.getInjectionPointClassLoader(injectionPoint);
-            Config config = ConfigProvider.getConfig(injectionPointClassLoader);
+            Config config = WeblogicConfigProducer.getConfig(injectionPoint);
             ConfigProperty configProperty = injectionPoint.getAnnotated().getAnnotation(ConfigProperty.class);
             if (type instanceof Class) {
                 String key = getConfigKey(injectionPoint, configProperty);
@@ -142,9 +139,9 @@ public class WeblogicConfigExtension implements Extension {
                 String[] parts = declaringType.getJavaClass().getCanonicalName().split("\\.");
                 StringBuilder sb = new StringBuilder(parts[0]);
                 for (int i = 1; i < parts.length; i++) {
-                    sb.append(".").append(parts[i]);
+                    sb.append('.').append(parts[i]);
                 }
-                sb.append(".").append(member.getJavaMember().getName());
+                sb.append('.').append(member.getJavaMember().getName());
                 return sb.toString();
             }
         }
