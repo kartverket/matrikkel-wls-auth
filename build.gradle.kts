@@ -117,6 +117,8 @@ subprojects {
         // Skift artifact id på maven publications slik at de begynner på "mat-auth-"
         extensions.findByType<PublishingExtension>()?.apply {
             publications.withType<MavenPublication>().all {
+
+                //dette er problemet fro included-builds...
                 if (groupId == project.group && artifactId == project.name && version == project.version) {
                     artifactId = "mat-auth-" + project.name
                 }
