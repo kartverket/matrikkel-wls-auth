@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(project(":common-weblogic"))
+    compileOnly(project(":mat-auth-common-weblogic"))
     compileOnly("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")
 }
 

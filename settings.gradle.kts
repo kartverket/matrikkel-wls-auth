@@ -20,7 +20,7 @@ include(
     ":mat-auth-annotation",
     ":mat-auth-api",
     ":mat-auth-common",
-    ":common-weblogic",
+    ":mat-auth-common-weblogic",
     ":ham",
     ":initializer-weblogic",
     ":id-store-basic",
