@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    compileOnlyApi(project(":api"))
+    compileOnlyApi(project(":mat-auth-api"))
 
     compileOnly (project(":common"))
     compileOnly ("org.bitbucket.b_c:jose4j")

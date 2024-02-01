@@ -13,7 +13,7 @@ dependencies {
 
     compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
 
-    api(project(":api"))
+    api(project(":mat-auth-api"))
     api ("org.bitbucket.b_c:jose4j")
 
     api ("io.arrow-kt:arrow-fx-coroutines")

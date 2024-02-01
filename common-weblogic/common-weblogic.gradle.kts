@@ -76,7 +76,7 @@ dependencies {
     api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api")
     api("org.eclipse.microprofile.config:microprofile-config-api")
 
-    api(project(":api"))
+    api(project(":mat-auth-api"))
     api(project(":common"))
 
     compileOnly("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")

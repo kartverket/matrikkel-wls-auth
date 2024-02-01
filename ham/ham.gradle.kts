@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    compileOnlyApi(project(":api"))
+    compileOnlyApi(project(":mat-auth-api"))
     compileOnly(project(":common"))
 }
 
