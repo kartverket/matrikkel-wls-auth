@@ -8,7 +8,7 @@ plugins {
 dependencies {
     compileOnlyApi(project(":mat-auth-api"))
 
-    compileOnly (project(":common"))
+    compileOnly (project(":mat-auth-common"))
     compileOnly ("org.bitbucket.b_c:jose4j")
     compileOnly ("org.eclipse.microprofile.config:microprofile-config-api")
 }

@@ -6,7 +6,7 @@ plugins {
 }
 dependencies {
     compileOnlyApi(project(":mat-auth-api"))
-    compileOnly(project(":common"))
+    compileOnly(project(":mat-auth-common"))
     compileOnly("jakarta.security.enterprise:jakarta.security.enterprise-api")
     compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
 }

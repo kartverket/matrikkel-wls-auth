@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
     compileOnlyApi(project(":mat-auth-api"))
-    compileOnly(project(":common"))
+    compileOnly(project(":mat-auth-common"))
 }
 
 java {
