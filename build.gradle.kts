@@ -74,7 +74,7 @@ subprojects {
             targetCompatibility = JavaVersion.VERSION_11
             afterEvaluate {
                 sourceSets.filter { it.name != TEST_SOURCE_SET_NAME }.forEach { sourceSet ->
-                    //
+                    // todo: enda et problem rundt included build
                     // Rename jar filene slik at de begynner på "mat-auth-"
                     tasks.findByName(sourceSet.jarTaskName)?.let { it as? Jar }?.apply {
                         if (archiveBaseName.getOrElse(project.name) == project.name) {
