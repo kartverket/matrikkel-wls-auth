@@ -24,7 +24,7 @@ include(
     ":mat-auth-ham",
     ":mat-auth-initializer-weblogic",
     ":mat-auth-id-store-basic",
-    ":id-store-jwt",
+    ":mat-auth-id-store-jwt",
     ":mat-auth-platform",
     ":example:shared",
     ":example:ear",
