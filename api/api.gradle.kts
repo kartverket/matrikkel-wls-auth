@@ -18,7 +18,7 @@ dependencies {
 
     compileOnlyApi("org.slf4j:slf4j-api")
 
-    api(project(":annotation"))
+    api(project(":mat-auth-annotation"))
 }
 
 java {

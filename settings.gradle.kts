@@ -17,7 +17,7 @@ pluginManagement {
 rootProject.name = "mat-auth"
 
 include(
-    ":annotation",
+    ":mat-auth-annotation",
     ":api",
     ":common",
     ":common-weblogic",
