@@ -6,7 +6,7 @@ dependencies {
     runtimeOnly project(':mat-auth-common-weblogic')
     runtimeOnly project(':mat-auth-ham')
     runtimeOnly project(':id-store-jwt')
-    runtimeOnly project(':id-store-basic')
+    runtimeOnly project(':mat-auth-id-store-basic')
 
     runtimeOnly 'org.slf4j:slf4j-simple:2.0.9'
 }
