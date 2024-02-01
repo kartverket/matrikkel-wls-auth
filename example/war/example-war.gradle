@@ -10,7 +10,7 @@ dependencies {
 
     compileOnly(project(':mat-auth-api'))
 
-    runtimeOnly(project(':initializer-weblogic'))
+    runtimeOnly(project(':mat-auth-initializer-weblogic'))
 
     compileOnly project(':example:shared')
 }
