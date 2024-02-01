@@ -98,7 +98,7 @@ subprojects {
                     }
 
                     dependencies {
-                        add(newTopConfig.name, platform(project(":platform")))
+                        add(newTopConfig.name, platform(project(":mat-auth-platform")))
                     }
                 }
             }

@@ -25,7 +25,7 @@ include(
     ":initializer-weblogic",
     ":id-store-basic",
     ":id-store-jwt",
-    ":platform",
+    ":mat-auth-platform",
     ":example:shared",
     ":example:ear",
     ":example:war",
