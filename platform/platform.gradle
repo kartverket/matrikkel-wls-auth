@@ -5,8 +5,6 @@ plugins {
 
 dependencies {
     constraints {
-        api('com.google.crypto.tink:tink:1.5.0')
-
         api('org.bitbucket.b_c:jose4j:0.9.4') //Json Web Token (JWT)
 
         def arrowVersion = '0.11.0'
