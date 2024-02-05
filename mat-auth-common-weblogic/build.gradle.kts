@@ -83,7 +83,7 @@ dependencies {
 
     val weblogicEmbed = configurations.weblogicEmbedImplementation
 
-    weblogicEmbed("io.smallrye:smallrye-config:1.3.6")
+    weblogicEmbed("io.smallrye:smallrye-config:1.5.0")
     runtimeOnly("org.jboss.logging:jboss-logging:3.4.3.Final")
 }
 
