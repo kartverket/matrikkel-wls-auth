@@ -1,16 +1,11 @@
 plugins {
-    id("java")
     id("java-library")
-    id ("org.jetbrains.kotlin.jvm")
     id("maven-publish")
 }
 
 dependencies {
-    compileOnlyApi(project(":api"))
-
-    compileOnly (project(":common"))
-    compileOnly ("org.bitbucket.b_c:jose4j")
-    compileOnly ("org.eclipse.microprofile.config:microprofile-config-api")
+    compileOnly(project(":mat-auth-common-weblogic"))
+    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")
 }
 
 java {

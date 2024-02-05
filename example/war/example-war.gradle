@@ -8,9 +8,9 @@ dependencies {
 //    compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api')
 //    compileOnly 'jakarta.security.enterprise:jakarta.security.enterprise-api'
 
-    compileOnly(project(':api'))
+    compileOnly(project(':mat-auth-api'))
 
-    runtimeOnly(project(':initializer-weblogic'))
+    runtimeOnly(project(':mat-auth-initializer-weblogic'))
 
     compileOnly project(':example:shared')
 }

@@ -74,13 +74,6 @@ subprojects {
             targetCompatibility = JavaVersion.VERSION_11
             afterEvaluate {
                 sourceSets.filter { it.name != TEST_SOURCE_SET_NAME }.forEach { sourceSet ->
-                    //
-                    // Rename jar filene slik at de begynner på "mat-auth-"
-                    tasks.findByName(sourceSet.jarTaskName)?.let { it as? Jar }?.apply {
-                        if (archiveBaseName.getOrElse(project.name) == project.name) {
-                            archiveBaseName.set("mat-auth-" + project.name)
-                        }
-                    }
 
                     //
                     // Legg til en toppkonfigurasjon til hvert sourceSet, denne brukes for å ha version constraints
@@ -105,22 +98,11 @@ subprojects {
                     }
 
                     dependencies {
-                        add(newTopConfig.name, platform(project(":platform")))
+                        add(newTopConfig.name, platform(project(":mat-auth-platform")))
                     }
                 }
             }
         }
     }
 
-    afterEvaluate {
-        //
-        // Skift artifact id på maven publications slik at de begynner på "mat-auth-"
-        extensions.findByType<PublishingExtension>()?.apply {
-            publications.withType<MavenPublication>().all {
-                if (groupId == project.group && artifactId == project.name && version == project.version) {
-                    artifactId = "mat-auth-" + project.name
-                }
-            }
-        }
-    }
 }
