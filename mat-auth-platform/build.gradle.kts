@@ -16,7 +16,7 @@ dependencies {
 
         api("org.slf4j:slf4j-api:2.0.9")
 
-        api("org.eclipse.microprofile.config:microprofile-config-api:1.4")
+        api("org.eclipse.microprofile.config:microprofile-config-api:3.1")
 
         api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api") {
             because("CDI < 2.0")
