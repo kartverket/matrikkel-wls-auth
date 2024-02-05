@@ -7,7 +7,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      'io.arrow-kt':
+      io_arrow_kt:
         patterns:
           - "io.arrow-kt:arrow-*"
   # Maintain dependencies for GitHub Actions
