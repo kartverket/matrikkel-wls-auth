@@ -11,7 +11,7 @@ dependencies {
         api("io.arrow-kt:arrow-fx:0.11.0")
         api("io.arrow-kt:arrow-fx-coroutines:0.11.0")
         api("io.arrow-kt:arrow-optics:0.11.0")
-        api("io.arrow-kt:arrow-syntax:0.11.0")
+        api("io.arrow-kt:arrow-syntax:0.12.1")
         api("io.arrow-kt:arrow-meta:0.11.0")
 
         api("org.slf4j:slf4j-api:2.0.9")
