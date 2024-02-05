@@ -79,7 +79,7 @@ dependencies {
     api(project(":mat-auth-api"))
     api(project(":mat-auth-common"))
 
-    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")
+    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:3.0.3")
 
     val weblogicEmbed = configurations.weblogicEmbedImplementation
 
