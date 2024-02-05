@@ -8,8 +8,8 @@ dependencies {
         api("org.bitbucket.b_c:jose4j:0.9.4") //Json Web Token (JWT)
 
         api("io.arrow-kt:arrow-core:0.11.0")
-        api("io.arrow-kt:arrow-fx:0.11.0")
-        api("io.arrow-kt:arrow-fx-coroutines:0.11.0")
+        api("io.arrow-kt:arrow-fx:0.12.1")
+        api("io.arrow-kt:arrow-fx-coroutines:0.12.1")
         api("io.arrow-kt:arrow-optics:0.11.0")
         api("io.arrow-kt:arrow-syntax:0.11.0")
         api("io.arrow-kt:arrow-meta:0.11.0")
