@@ -17,7 +17,6 @@ dependencies {
     api ("org.bitbucket.b_c:jose4j")
 
     api ("io.arrow-kt:arrow-fx-coroutines")
-    api ("io.arrow-kt:arrow-syntax")
 }
 
 java {
