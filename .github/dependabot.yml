@@ -6,6 +6,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      arrow-kt:
+        patterns:
+          - "io.arrow-kt:arrow-*"
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/.github/"
