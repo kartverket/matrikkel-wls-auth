@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     constraints {
-        api("org.bitbucket.b_c:jose4j:0.9.4") //Json Web Token (JWT)
+        api("org.bitbucket.b_c:jose4j:0.9.5") //Json Web Token (JWT)
 
         api("io.arrow-kt:arrow-core:0.11.0")
         api("io.arrow-kt:arrow-fx-coroutines:0.11.0")
