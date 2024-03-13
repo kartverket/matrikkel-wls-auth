@@ -1,0 +1,33 @@
+# nonk8s
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: matrikkel-wls-auth-team
+spec:
+  type: team
+  parent: Eiendom
+  children: [matrikkel-wls-auth-security-champion]
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: matrikkel-wls-auth-security-champion
+  annotations:
+    github.com/user-login: lislei
+spec:
+  type: security-champion
+  parent: security-champions-Eiendom
+  members: [Matrikkel]
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: matrikkel-wls-auth
+  links:
+    - url: https://github.com/kartverket/matrikkel-wls-auth
+      title: matrikkel-wls-auth på GitHub
+spec:
+  type: repo
+  lifecycle: production
+  owner: matrikkel-wls-auth-team
