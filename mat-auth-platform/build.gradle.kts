@@ -7,10 +7,10 @@ dependencies {
     constraints {
         api("org.bitbucket.b_c:jose4j:0.9.6") //Json Web Token (JWT)
 
-        api("io.arrow-kt:arrow-core:0.11.0")
-        api("io.arrow-kt:arrow-fx-coroutines:0.11.0")
-        api("io.arrow-kt:arrow-optics:0.11.0")
-        api("io.arrow-kt:arrow-meta:0.11.0")
+        api("io.arrow-kt:arrow-core:1.2.3")
+        api("io.arrow-kt:arrow-fx-coroutines:1.2.3")
+        api("io.arrow-kt:arrow-optics:1.2.3")
+        api("io.arrow-kt:arrow-meta:1.6.2")
 
         api("org.slf4j:slf4j-api:2.0.9")
 
