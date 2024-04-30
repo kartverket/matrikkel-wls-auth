@@ -1,0 +1,38 @@
+# nonk8s
+apiVersion: "backstage.io/v1alpha1"
+kind: "Component"
+metadata:
+  name: "matrikkel-wls-auth"
+  tags:
+  - "internal"
+spec:
+  type: "library"
+  lifecycle: "production"
+  owner: "Heimdall"
+  system: "matrikkel"
+---
+apiVersion: "backstage.io/v1alpha1"
+kind: "Group"
+metadata:
+  name: "security_champion_matrikkel-wls-auth"
+  title: "Security Champion matrikkel-wls-auth"
+spec:
+  type: "security_champion"
+  parent: "eiendom_security_champions"
+  members:
+  - "lislei"
+  children:
+  - "resource:matrikkel-wls-auth"
+---
+apiVersion: "backstage.io/v1alpha1"
+kind: "Resource"
+metadata:
+  name: "matrikkel-wls-auth"
+  links:
+  - url: "https://github.com/kartverket/matrikkel-wls-auth"
+    title: "matrikkel-wls-auth på GitHub"
+spec:
+  type: "repo"
+  owner: "security_champion_matrikkel-wls-auth"
+  dependencyOf:
+  - "component:matrikkel-wls-auth"
