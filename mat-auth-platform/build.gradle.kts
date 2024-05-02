@@ -81,7 +81,7 @@ dependencies {
                 strictly("3.1.Final")
             }
         }
-        api("com.google.guava:guava:32.1.2-jre")
+        api("com.google.guava:guava:33.2.0-jre")
         api("jakarta.security.jacc:jakarta.security.jacc-api") {
             because("WebLogic 14.1.1.0")
             version {
