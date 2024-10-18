@@ -1,8 +1,8 @@
 package no.statkart.matrikkel.auth.credential;
 
 
-import javax.security.enterprise.credential.Password;
-import javax.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.security.enterprise.credential.Password;
+import jakarta.security.enterprise.credential.UsernamePasswordCredential;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
