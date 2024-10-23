@@ -2,8 +2,8 @@ package no.statkart.matrikkel.auth.identity.jwt
 
 import no.statkart.matrikkel.auth.credential.JsonWebStructureCredential
 import no.statkart.matrikkel.auth.credential.extractor.HttpCredentialExtractor
-import javax.enterprise.context.ApplicationScoped
-import javax.servlet.http.HttpServletRequest
+import jakarta.enterprise.context.ApplicationScoped
+import jakarta.servlet.http.HttpServletRequest
 
 @ApplicationScoped
 class BearerJWTCredentialExtractor : HttpCredentialExtractor<JsonWebStructureCredential> {

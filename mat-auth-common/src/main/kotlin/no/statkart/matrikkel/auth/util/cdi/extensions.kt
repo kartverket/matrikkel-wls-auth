@@ -5,7 +5,7 @@ import no.statkart.matrikkel.auth.annotation.literal.DefaultLiteral
 import java.lang.IllegalArgumentException
 import java.util.*
 import java.util.Collections.newSetFromMap
-import javax.enterprise.inject.spi.*
+import jakarta.enterprise.inject.spi.*
 
 
 val Annotated.annotatedType: AnnotatedType<*>

@@ -25,42 +25,42 @@ dependencies {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[1.0.1, 2.0[")
-                prefer("1.0.1")
+                prefer("2.0.0")
             }
         }
         api("jakarta.ws.rs:jakarta.ws.rs-api") {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[2.1.5, 3.0[")
-                prefer("2.1.5")
+                prefer("3.0.0")
             }
         }
         api("jakarta.enterprise:jakarta.enterprise.cdi-api") {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[2.0.1, 3.0[")
-                prefer("2.0.2")
+                prefer("3.0.1")
             }
         }
         api("jakarta.servlet:jakarta.servlet-api") {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[4.0.2, 6.0[")
-                prefer("4.0.2")
+                prefer("5.0.0")
             }
         }
         api("jakarta.annotation:jakarta.annotation-api") {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[1.3.4, 2.0[")
-                prefer("1.3.4")
+                prefer("2.0.0")
             }
         }
         api("jakarta.ejb:jakarta.ejb-api") {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[3.2.5, 4.0[")
-                prefer("3.2.5")
+                prefer("4.0.1")
             }
         }
         api("org.jboss.weld:weld-api") {
@@ -87,14 +87,14 @@ dependencies {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[1.1.2, 2.0[")
-                prefer("1.1.2")
+                prefer("2.0.0-RC1")
             }
         }
         api("jakarta.json:jakarta.json-api")  {
 //            because("WebLogic 14.1.1.0")
             version {
 //                strictly("[1.1.5, 2.0[")
-                prefer("1.1.5")
+                prefer("2.0.2")
             }
         }
     }

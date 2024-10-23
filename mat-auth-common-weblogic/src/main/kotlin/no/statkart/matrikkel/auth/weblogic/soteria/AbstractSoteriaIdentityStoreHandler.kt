@@ -3,16 +3,16 @@ package no.statkart.matrikkel.auth.weblogic.soteria
 import java.security.AccessController
 import java.security.PrivilegedAction
 import java.util.*
-import javax.annotation.PostConstruct
-import javax.annotation.PreDestroy
-import javax.enterprise.context.spi.CreationalContext
-import javax.enterprise.inject.spi.Bean
-import javax.enterprise.inject.spi.BeanManager
-import javax.inject.Inject
-import javax.security.enterprise.credential.Credential
-import javax.security.enterprise.identitystore.CredentialValidationResult
-import javax.security.enterprise.identitystore.IdentityStore
-import javax.security.enterprise.identitystore.IdentityStoreHandler
+import jakarta.annotation.PostConstruct
+import jakarta.annotation.PreDestroy
+import jakarta.enterprise.context.spi.CreationalContext
+import jakarta.enterprise.inject.spi.Bean
+import jakarta.enterprise.inject.spi.BeanManager
+import jakarta.inject.Inject
+import jakarta.security.enterprise.credential.Credential
+import jakarta.security.enterprise.identitystore.CredentialValidationResult
+import jakarta.security.enterprise.identitystore.IdentityStore
+import jakarta.security.enterprise.identitystore.IdentityStoreHandler
 
 abstract class AbstractSoteriaIdentityStoreHandler protected constructor() : IdentityStoreHandler {
 

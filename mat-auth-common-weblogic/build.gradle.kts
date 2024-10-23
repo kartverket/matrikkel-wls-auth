@@ -79,11 +79,11 @@ dependencies {
     api(project(":mat-auth-api"))
     api(project(":mat-auth-common"))
 
-    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:1.0.1")
+    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:2.0.0")
 
     val weblogicEmbed = configurations.weblogicEmbedImplementation
 
-    weblogicEmbed("io.smallrye:smallrye-config:1.3.6")
+    weblogicEmbed("io.smallrye.config:smallrye-config:3.10.0")
     runtimeOnly("org.jboss.logging:jboss-logging:3.4.3.Final")
 }
 

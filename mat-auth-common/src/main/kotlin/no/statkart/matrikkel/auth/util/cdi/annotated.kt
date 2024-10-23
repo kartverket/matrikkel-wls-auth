@@ -1,7 +1,7 @@
 package no.statkart.matrikkel.auth.util.cdi
 
 import java.lang.reflect.Type
-import javax.enterprise.inject.spi.*
+import jakarta.enterprise.inject.spi.*
 
 sealed class AnnotatedImpl(
     annotated: Annotated,

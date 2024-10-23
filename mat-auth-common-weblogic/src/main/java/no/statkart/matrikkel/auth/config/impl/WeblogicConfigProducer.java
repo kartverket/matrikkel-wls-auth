@@ -7,14 +7,14 @@ import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.Specializes;
-import javax.enterprise.inject.spi.Annotated;
-import javax.enterprise.inject.spi.AnnotatedField;
-import javax.enterprise.inject.spi.AnnotatedParameter;
-import javax.enterprise.inject.spi.InjectionPoint;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Specializes;
+import jakarta.enterprise.inject.spi.Annotated;
+import jakarta.enterprise.inject.spi.AnnotatedField;
+import jakarta.enterprise.inject.spi.AnnotatedParameter;
+import jakarta.enterprise.inject.spi.InjectionPoint;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,64 +38,64 @@ public class WeblogicConfigProducer extends ConfigProducer {
     @Dependent
     @Produces
     @ConfigProperty
-    String produceStringConfigProperty(InjectionPoint ip) {
+    protected String produceStringConfigProperty(InjectionPoint ip) {
         return getValue(ip, String.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Long getLongValue(InjectionPoint ip) {
+    protected Long getLongValue(InjectionPoint ip) {
         return getValue(ip, Long.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Integer getIntegerValue(InjectionPoint ip) {
+    protected Integer getIntegerValue(InjectionPoint ip) {
         return getValue(ip, Integer.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Float produceFloatConfigProperty(InjectionPoint ip) {
+    protected Float produceFloatConfigProperty(InjectionPoint ip) {
         return getValue(ip, Float.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Double produceDoubleConfigProperty(InjectionPoint ip) {
+    protected Double produceDoubleConfigProperty(InjectionPoint ip) {
         return getValue(ip, Double.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    Boolean produceBooleanConfigProperty(InjectionPoint ip) {
+    protected Boolean produceBooleanConfigProperty(InjectionPoint ip) {
         return getValue(ip, Boolean.class, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    <T> Optional<T> produceOptionalConfigValue(InjectionPoint injectionPoint) {
-        return ConfigProducerUtil.optionalConfigValue(injectionPoint, getConfig(injectionPoint));
+    protected <T> Optional<T> produceOptionalConfigValue(InjectionPoint injectionPoint) {
+        return ConfigProducerUtil.getValue(injectionPoint, getConfig(injectionPoint));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    <T> Set<T> producesSetConfigProperty(InjectionPoint ip) {
-        return ConfigProducerUtil.collectionConfigProperty(ip, getConfig(ip), new HashSet<>());
+    protected <T> Set<T> producesSetConfigProperty(InjectionPoint ip) {
+        return ConfigProducerUtil.getValue(ip, getConfig(ip));
     }
 
     @Dependent
     @Produces
     @ConfigProperty
-    <T> List<T> producesListConfigProperty(InjectionPoint ip) {
-        return ConfigProducerUtil.collectionConfigProperty(ip, getConfig(ip), new ArrayList<>());
+    protected <T> List<T> producesListConfigProperty(InjectionPoint ip) {
+        return ConfigProducerUtil.getValue(ip, getConfig(ip));
     }
 
     /**
