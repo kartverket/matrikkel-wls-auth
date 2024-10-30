@@ -3,5 +3,4 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(project(':mat-auth-initializer-weblogic'))
 }
