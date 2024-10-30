@@ -1,1 +1,1 @@
-no.statkart.matrikkel.auth.ee.security.webapp.WeblogicSoteriaInitializer
+org.glassfish.soteria.servlet.SamRegistrationInstaller

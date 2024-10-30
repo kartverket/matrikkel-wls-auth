@@ -1,1 +1,1 @@
-no.statkart.matrikkel.auth.config.impl.WeblogicConfigExtension
+io.smallrye.config.inject.ConfigExtension

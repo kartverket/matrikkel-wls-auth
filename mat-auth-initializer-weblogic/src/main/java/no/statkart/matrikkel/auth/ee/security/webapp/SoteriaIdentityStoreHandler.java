@@ -18,4 +18,3 @@ public class SoteriaIdentityStoreHandler extends AbstractSoteriaIdentityStoreHan
         // do nothing, trigger creation
     }
 }
-
