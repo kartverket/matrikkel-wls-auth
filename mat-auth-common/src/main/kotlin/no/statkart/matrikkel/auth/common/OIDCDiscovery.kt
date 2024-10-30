@@ -25,9 +25,11 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 import kotlin.collections.set
 
-class OIDCDiscovery(uri: URI, private val env: Environment = Environment(IOPool)) : ConfigSource {
+open class OIDCDiscovery(uri: URI) : ConfigSource {
 
     private val endpoint: WebTarget = client.target(uri)
+
+    private val env: Environment = Environment(IOPool);
 
     private val propertyMap: Either<Throwable, Map<String, String>> by lazy {
         env.unsafeRunSync {

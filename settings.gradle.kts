@@ -22,7 +22,6 @@ include(
     ":mat-auth-common",
     ":mat-auth-common-weblogic",
     ":mat-auth-ham",
-    ":mat-auth-initializer-weblogic",
     ":mat-auth-id-store-basic",
     ":mat-auth-id-store-jwt",
     ":mat-auth-platform",
