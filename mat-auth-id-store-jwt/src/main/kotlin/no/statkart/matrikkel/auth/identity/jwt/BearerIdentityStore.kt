@@ -13,11 +13,13 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult
 import jakarta.security.enterprise.identitystore.IdentityStore
 
 @ApplicationScoped
-class BearerIdentityStore @Inject constructor(
-    jsonWebKeySet: org.jose4j.keys.resolvers.VerificationKeyResolver,
+open class BearerIdentityStore @Inject constructor(
+    jsonWebKeySet: org.jose4j.keys.resolvers.VerificationKeyResolver?,
     @ConfigProperty(name = AuthConfigKeys.ISSUER) issuer: String?,
-    @ConfigProperty(name = AuthConfigKeys.AUD, defaultValue = "") audiences: List<String>
+    @ConfigProperty(name = AuthConfigKeys.AUD, defaultValue = "") audiences: List<String>?
 ) : IdentityStore {
+
+    constructor() : this(null, null, null)
 
     private val jwtConsumer: JwtConsumer = org.jose4j.jwt.consumer.JwtConsumerBuilder()
         .setVerificationKeyResolver(jsonWebKeySet)
@@ -32,7 +34,7 @@ class BearerIdentityStore @Inject constructor(
         .setAllowedClockSkewInSeconds(60)
         .setExpectedIssuer(true, issuer)
         .run {
-            if (audiences.isEmpty()) {
+            if (audiences!!.isEmpty()) {
                 setSkipDefaultAudienceValidation()
             } else {
                 setExpectedAudience(true, *audiences.toTypedArray())
