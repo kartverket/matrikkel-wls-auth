@@ -13,12 +13,14 @@ import jakarta.enterprise.inject.Instance
 import jakarta.inject.Inject
 
 @ApplicationScoped
-class DefaultHttpsJwksVerificationKeyResolver(private val verificationKeyResolver: Lazy<VerificationKeyResolver>) : VerificationKeyResolver {
+open class DefaultHttpsJwksVerificationKeyResolver(private val verificationKeyResolver: Lazy<VerificationKeyResolver>?) : VerificationKeyResolver {
+    constructor():this(null)
+
     @Inject
     protected constructor (
         @ConfigProperty(name = AuthConfigKeys.VERIFIER_PUBLIC_KEY_LOCATION) locationProvider: Instance<String>
     ) : this(lazy { HttpsJwksVerificationKeyResolver(HttpsJwks(locationProvider.get())) })
 
     override fun resolveKey(jws: JsonWebSignature?, nestingContext: MutableList<JsonWebStructure>?): Key =
-        verificationKeyResolver.value.resolveKey(jws, nestingContext)
+        verificationKeyResolver!!.value.resolveKey(jws, nestingContext)
 }

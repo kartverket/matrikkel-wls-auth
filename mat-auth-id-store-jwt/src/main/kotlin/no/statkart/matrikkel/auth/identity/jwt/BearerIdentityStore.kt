@@ -49,7 +49,7 @@ open class BearerIdentityStore @Inject constructor(
             CredentialValidationResult.NOT_VALIDATED_RESULT
         }
 
-    fun validate(credential: JsonWebStructureCredential): CredentialValidationResult {
+    open fun validate(credential: JsonWebStructureCredential): CredentialValidationResult {
         val jwtContext = try {
             jwtConsumer.process(credential.compactSerialization)
         } catch (e: org.jose4j.jwt.consumer.InvalidJwtException) {

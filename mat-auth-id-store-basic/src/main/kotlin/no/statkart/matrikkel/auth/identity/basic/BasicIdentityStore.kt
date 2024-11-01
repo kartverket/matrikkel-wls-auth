@@ -70,7 +70,7 @@ open class BasicIdentityStore protected constructor(
             identityStores
     )
 
-    fun validate(credential: BasicAuthenticationCredentialExt): CredentialValidationResult {
+    open fun validate(credential: BasicAuthenticationCredentialExt): CredentialValidationResult {
         val credentialKey = MessageDigest.getInstance("SHA-256").run {
             update(credential.caller.toByteArray())
             update(Charsets.UTF_8.encode(CharBuffer.wrap(credential.password.value)))
