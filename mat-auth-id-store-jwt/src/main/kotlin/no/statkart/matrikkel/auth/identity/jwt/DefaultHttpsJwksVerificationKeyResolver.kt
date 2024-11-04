@@ -18,8 +18,8 @@ open class DefaultHttpsJwksVerificationKeyResolver(private val verificationKeyRe
 
     @Inject
     protected constructor (
-        @ConfigProperty(name = AuthConfigKeys.VERIFIER_PUBLIC_KEY_LOCATION) locationProvider: Instance<String>
-    ) : this(lazy { HttpsJwksVerificationKeyResolver(HttpsJwks(locationProvider.get())) })
+        @ConfigProperty(name = AuthConfigKeys.VERIFIER_PUBLIC_KEY_LOCATION) locationProvider: String
+    ) : this(lazy { HttpsJwksVerificationKeyResolver(HttpsJwks(locationProvider)) })
 
     override fun resolveKey(jws: JsonWebSignature?, nestingContext: MutableList<JsonWebStructure>?): Key =
         verificationKeyResolver!!.value.resolveKey(jws, nestingContext)

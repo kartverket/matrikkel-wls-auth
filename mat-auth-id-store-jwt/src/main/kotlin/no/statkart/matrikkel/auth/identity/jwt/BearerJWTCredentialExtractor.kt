@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.servlet.http.HttpServletRequest
 
 @ApplicationScoped
-class BearerJWTCredentialExtractor : HttpCredentialExtractor<JsonWebStructureCredential> {
+open class BearerJWTCredentialExtractor : HttpCredentialExtractor<JsonWebStructureCredential> {
     override fun getCredential(request: HttpServletRequest, map: Map<*, *>): JsonWebStructureCredential? =
         request.getHeader("Authorization")?.let { credentials(it) }?.let {
             JsonWebStructureCredential(it, false)

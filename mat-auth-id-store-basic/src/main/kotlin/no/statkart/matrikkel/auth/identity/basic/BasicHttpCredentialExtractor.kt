@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped
 import jakarta.servlet.http.HttpServletRequest
 
 @ApplicationScoped
-class BasicHttpCredentialExtractor : HttpCredentialExtractor<BasicAuthenticationCredentialExt> {
+open class BasicHttpCredentialExtractor : HttpCredentialExtractor<BasicAuthenticationCredentialExt> {
     override fun getCredential(request: HttpServletRequest, map: Map<*, *>): BasicAuthenticationCredentialExt? {
         return BasicAuthenticationCredentialExt.fromAuthorizationHeader(
             request.getHeader("Authorization"),

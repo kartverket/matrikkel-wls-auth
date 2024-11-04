@@ -10,12 +10,12 @@ dependencies {
         api("io.arrow-kt:arrow-optics:0.11.0")
         api("io.arrow-kt:arrow-meta:0.11.0")
         api("org.slf4j:slf4j-api:2.0.9")
-        api("org.eclipse.microprofile.config:microprofile-config-api:1.4")
+        api("org.eclipse.microprofile.config:microprofile-config-api:3.1")
         api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api") {
 //            because("CDI < 2.0")
             version {
 //                strictly("[1.1.1, 2.0[")
-                prefer("1.1.1")
+                prefer("2.1")
             }
         }
         //
