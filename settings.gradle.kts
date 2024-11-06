@@ -19,8 +19,7 @@ rootProject.name = "mat-auth"
 include(
     ":mat-auth-annotation",
     ":mat-auth-api",
-    ":mat-auth-common",
-    ":mat-auth-common-weblogic",
+    ":mat-auth-shared",
     ":mat-auth-ham",
     ":mat-auth-id-store-basic",
     ":mat-auth-id-store-jwt",

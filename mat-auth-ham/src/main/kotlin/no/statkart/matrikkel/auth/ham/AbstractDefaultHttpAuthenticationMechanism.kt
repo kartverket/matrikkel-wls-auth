@@ -1,4 +1,4 @@
-package no.statkart.matrikkel.auth.common
+package no.statkart.matrikkel.auth.ham
 
 import no.statkart.matrikkel.auth.credential.AuthenticationChallenger
 import no.statkart.matrikkel.auth.credential.extractor.HttpCredentialExtractor
@@ -11,6 +11,7 @@ import javax.security.enterprise.identitystore.CredentialValidationResult
 import javax.security.enterprise.identitystore.IdentityStoreHandler
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+
 
 abstract class AbstractDefaultHttpAuthenticationMechanism protected constructor(
     private val identityStoreHandler: IdentityStoreHandler,

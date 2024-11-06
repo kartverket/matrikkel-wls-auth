@@ -1,4 +1,4 @@
-package no.statkart.matrikkel.auth.weblogic.soteria
+package no.statkart.matrikkel.auth.shared
 
 import javax.annotation.Priority
 import javax.enterprise.context.ApplicationScoped
@@ -10,7 +10,7 @@ import javax.interceptor.Interceptor
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.LIBRARY_BEFORE + 200)
-class SharedSoteriaIdentityStoreHandler : AbstractSoteriaIdentityStoreHandler() {
+class SharedIdentityStoreHandler : AbstractIdentityStoreHandler() {
     internal fun onApplicationStartup(@Observes @Initialized(ApplicationScoped::class) event: Any) {
         // do nothing, trigger creation
     }

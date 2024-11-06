@@ -1,4 +1,4 @@
-package no.statkart.matrikkel.auth.weblogic.soteria
+package no.statkart.matrikkel.auth.shared
 
 import java.security.AccessController
 import java.security.PrivilegedAction
@@ -14,7 +14,7 @@ import javax.security.enterprise.identitystore.CredentialValidationResult
 import javax.security.enterprise.identitystore.IdentityStore
 import javax.security.enterprise.identitystore.IdentityStoreHandler
 
-abstract class AbstractSoteriaIdentityStoreHandler protected constructor() : IdentityStoreHandler {
+abstract class AbstractIdentityStoreHandler protected constructor() : IdentityStoreHandler {
 
     private lateinit var authenticationIdentityStores: List<IdentityStore>
     private lateinit var authorizationIdentityStores: List<IdentityStore>

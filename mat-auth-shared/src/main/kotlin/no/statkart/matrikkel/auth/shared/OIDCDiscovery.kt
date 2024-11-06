@@ -1,4 +1,4 @@
-package no.statkart.matrikkel.auth.common
+package no.statkart.matrikkel.auth.shared
 
 import arrow.core.Either
 import arrow.core.Nel

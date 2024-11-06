@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly project(':mat-auth-common-weblogic')
     runtimeOnly project(':mat-auth-ham')
     runtimeOnly project(':mat-auth-id-store-jwt')
     runtimeOnly project(':mat-auth-id-store-basic')
