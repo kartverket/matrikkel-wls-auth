@@ -10,7 +10,6 @@ pluginManagement {
         id ("org.jetbrains.kotlin.plugin.allopen") version kotlinVersion
         id ("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
         id ("org.jetbrains.kotlin.kapt") version kotlinVersion
-        id ("com.github.johnrengelman.shadow") version "5.2.0"
     }
 }
 
