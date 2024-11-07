@@ -9,8 +9,6 @@ pluginManagement {
         id ("org.jetbrains.kotlin.jvm") version kotlinVersion
         id ("org.jetbrains.kotlin.plugin.allopen") version kotlinVersion
         id ("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
-        id ("org.jetbrains.kotlin.kapt") version kotlinVersion
-        id ("com.github.johnrengelman.shadow") version "5.2.0"
     }
 }
 
@@ -19,10 +17,8 @@ rootProject.name = "mat-auth"
 include(
     ":mat-auth-annotation",
     ":mat-auth-api",
-    ":mat-auth-common",
-    ":mat-auth-common-weblogic",
+    ":mat-auth-shared",
     ":mat-auth-ham",
-    ":mat-auth-initializer-weblogic",
     ":mat-auth-id-store-basic",
     ":mat-auth-id-store-jwt",
     ":mat-auth-platform",

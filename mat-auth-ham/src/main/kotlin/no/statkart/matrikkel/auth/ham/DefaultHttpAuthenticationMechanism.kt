@@ -1,6 +1,5 @@
 package no.statkart.matrikkel.auth.ham
 
-import no.statkart.matrikkel.auth.common.AbstractDefaultHttpAuthenticationMechanism
 import no.statkart.matrikkel.auth.credential.AuthenticationChallenger
 import no.statkart.matrikkel.auth.credential.extractor.HttpCredentialExtractor
 import javax.annotation.Priority
@@ -11,6 +10,11 @@ import javax.inject.Inject
 import javax.interceptor.Interceptor
 import javax.security.enterprise.identitystore.IdentityStoreHandler
 
+/**
+ * CDI bønne må være tilgjengelig fra alle applikasjoner.
+ * Kan gjøres ved å legge til mat-auth-ham til alle relevante war-er.
+ * [https://javaee.github.io/security-spec/spec/jsr375-spec.html#_installation_and_configuration]
+ */
 @Suppress("NO_NOARG_CONSTRUCTOR_IN_SUPERCLASS")
 @ApplicationScoped
 @Alternative
