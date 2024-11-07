@@ -17,8 +17,6 @@ dependencies {
     compileOnlyApi("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api")
 
     compileOnlyApi("org.slf4j:slf4j-api")
-
-    api(project(":mat-auth-annotation"))
 }
 
 java {
