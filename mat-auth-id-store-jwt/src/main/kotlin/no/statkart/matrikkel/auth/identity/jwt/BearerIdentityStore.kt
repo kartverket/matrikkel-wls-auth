@@ -13,13 +13,11 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult
 import jakarta.security.enterprise.identitystore.IdentityStore
 
 @ApplicationScoped
-open class BearerIdentityStore @Inject constructor(
-    jsonWebKeySet: org.jose4j.keys.resolvers.VerificationKeyResolver?,
+class BearerIdentityStore @Inject constructor(
+    jsonWebKeySet: org.jose4j.keys.resolvers.VerificationKeyResolver,
     @ConfigProperty(name = AuthConfigKeys.ISSUER) issuer: String?,
-    @ConfigProperty(name = AuthConfigKeys.AUD, defaultValue = "") audiences: List<String>?
+    @ConfigProperty(name = AuthConfigKeys.AUD, defaultValue = "") audiences: List<String>
 ) : IdentityStore {
-
-    constructor() : this(null, null, null)
 
     private val jwtConsumer: JwtConsumer = org.jose4j.jwt.consumer.JwtConsumerBuilder()
         .setVerificationKeyResolver(jsonWebKeySet)
@@ -34,7 +32,7 @@ open class BearerIdentityStore @Inject constructor(
         .setAllowedClockSkewInSeconds(60)
         .setExpectedIssuer(true, issuer)
         .run {
-            if (audiences!!.isEmpty()) {
+            if (audiences.isEmpty()) {
                 setSkipDefaultAudienceValidation()
             } else {
                 setExpectedAudience(true, *audiences.toTypedArray())
@@ -49,7 +47,7 @@ open class BearerIdentityStore @Inject constructor(
             CredentialValidationResult.NOT_VALIDATED_RESULT
         }
 
-    open fun validate(credential: JsonWebStructureCredential): CredentialValidationResult {
+    fun validate(credential: JsonWebStructureCredential): CredentialValidationResult {
         val jwtContext = try {
             jwtConsumer.process(credential.compactSerialization)
         } catch (e: org.jose4j.jwt.consumer.InvalidJwtException) {

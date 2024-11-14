@@ -10,8 +10,8 @@ import jakarta.interceptor.Interceptor
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.LIBRARY_BEFORE + 200)
-open class SharedIdentityStoreHandler : AbstractIdentityStoreHandler() {
-    internal open fun onApplicationStartup(@Observes @Initialized(ApplicationScoped::class) event: Any) {
+class SharedIdentityStoreHandler : AbstractIdentityStoreHandler() {
+    internal fun onApplicationStartup(@Observes @Initialized(ApplicationScoped::class) event: Any) {
         // do nothing, trigger creation
     }
 }

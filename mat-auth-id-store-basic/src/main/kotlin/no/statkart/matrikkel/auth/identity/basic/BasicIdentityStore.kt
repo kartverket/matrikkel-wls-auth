@@ -42,18 +42,16 @@ import jakarta.ws.rs.core.Response
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.LIBRARY_BEFORE + 200)
-open class BasicIdentityStore protected constructor(
-    private val tokenTarget: WebTarget?,
+class BasicIdentityStore protected constructor(
+    private val tokenTarget: WebTarget,
     private val clientCredential: String?,
-    private val identityStores: IdentityStoreHandler?,
+    private val identityStores: IdentityStoreHandler,
     private val env: Environment = Environment()
 ) : IdentityStore {
 
     private val map: ConcurrentMap<String, Pair<JsonWebStructureCredential, String?>> = ConcurrentHashMap()
     private val salt = SecureRandom().run { byteArrayOf().also { nextBytes(it) } }
-
-    constructor() : this(null, null, null)
-
+    
     @Inject
     protected constructor(
             identityStores: IdentityStoreHandler,
@@ -70,7 +68,7 @@ open class BasicIdentityStore protected constructor(
             identityStores
     )
 
-    open fun validate(credential: BasicAuthenticationCredentialExt): CredentialValidationResult {
+    fun validate(credential: BasicAuthenticationCredentialExt): CredentialValidationResult {
         val credentialKey = MessageDigest.getInstance("SHA-256").run {
             update(credential.caller.toByteArray())
             update(Charsets.UTF_8.encode(CharBuffer.wrap(credential.password.value)))
@@ -79,7 +77,7 @@ open class BasicIdentityStore protected constructor(
         }
         val cachedTokens = map[credentialKey]
         if (cachedTokens != null) {
-            val cachedValidationResult = cachedTokens.let { (accessToken, _) -> identityStores!!.validate(accessToken) }.takeIf { it?.status == CredentialValidationResult.Status.VALID }
+            val cachedValidationResult = cachedTokens.let { (accessToken, _) -> identityStores.validate(accessToken) }.takeIf { it?.status == CredentialValidationResult.Status.VALID }
             if (cachedValidationResult?.status == CredentialValidationResult.Status.VALID) {
                 return cachedValidationResult
             }
@@ -103,7 +101,7 @@ open class BasicIdentityStore protected constructor(
         return if (tokens == null) {
             CredentialValidationResult.INVALID_RESULT
         } else {
-            val validationResult = identityStores!!.validate(tokens.first)
+            val validationResult = identityStores.validate(tokens.first)
             if (validationResult.status != CredentialValidationResult.Status.VALID) {
                 map.remove(credentialKey, tokens)
             }
@@ -129,7 +127,7 @@ open class BasicIdentityStore protected constructor(
         accessToken to tokenResult.getString("refresh_token", null)
     }
 
-    private suspend fun fetchTokenResult(credential: BasicAuthenticationCredentialExt): Either<Response, JsonObject> = tokenTarget!!
+    private suspend fun fetchTokenResult(credential: BasicAuthenticationCredentialExt): Either<Response, JsonObject> = tokenTarget
             .request()
             .run {
                 if (clientCredential != null) {
@@ -142,7 +140,7 @@ open class BasicIdentityStore protected constructor(
                 buildPost(form).suspend().readEntity()
             }
 
-    private suspend fun refreshTokenResult(refreshToken: String): Either<Response, JsonObject> = tokenTarget!!
+    private suspend fun refreshTokenResult(refreshToken: String): Either<Response, JsonObject> = tokenTarget
             .request()
             .run {
                 if (clientCredential != null) {

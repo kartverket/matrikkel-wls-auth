@@ -19,13 +19,12 @@ import jakarta.security.enterprise.identitystore.IdentityStoreHandler
 @ApplicationScoped
 @Alternative
 @Priority(Interceptor.Priority.LIBRARY_BEFORE + 200)
-open class DefaultHttpAuthenticationMechanism @Inject constructor (
-    identityStoreHandler: IdentityStoreHandler?,
-    credentialExtractorInstance: Instance<HttpCredentialExtractor<*>>?,
-    authenticationChallengers: Instance<AuthenticationChallenger>?
+class DefaultHttpAuthenticationMechanism @Inject constructor (
+    identityStoreHandler: IdentityStoreHandler,
+    credentialExtractorInstance: Instance<HttpCredentialExtractor<*>>,
+    authenticationChallengers: Instance<AuthenticationChallenger>
 ) : AbstractDefaultHttpAuthenticationMechanism(
-        identityStoreHandler!!,
-        credentialExtractorInstance!!,
-        authenticationChallengers!!) {
-    constructor():this(null, null, null)
+        identityStoreHandler,
+        credentialExtractorInstance,
+        authenticationChallengers) {
 }
