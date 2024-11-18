@@ -15,7 +15,6 @@ pluginManagement {
 rootProject.name = "mat-auth"
 
 include(
-    ":mat-auth-annotation",
     ":mat-auth-api",
     ":mat-auth-shared",
     ":mat-auth-ham",
