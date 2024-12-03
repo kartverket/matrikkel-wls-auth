@@ -1,9 +1,9 @@
 package no.statkart.matrikkel.auth.credential.extractor
 
-import javax.annotation.Priority
-import javax.interceptor.Interceptor
-import javax.security.enterprise.credential.Credential
-import javax.servlet.http.HttpServletRequest
+import jakarta.annotation.Priority
+import jakarta.interceptor.Interceptor
+import jakarta.security.enterprise.credential.Credential
+import jakarta.servlet.http.HttpServletRequest
 
 interface HttpCredentialExtractor<T : Credential> {
 

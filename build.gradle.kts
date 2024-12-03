@@ -19,7 +19,7 @@ allprojects {
                 ?.takeIf { it.isNotBlank() }
                 ?.prefixIfNot("-")
                 ?: ""
-        version = "1.0.0$versionQualifier"
+        version = "2.0.0$versionQualifier"
     }
 }
 
@@ -34,13 +34,13 @@ subprojects {
         plugins.apply("kotlin-allopen")
 
         configure<AllOpenExtension> {
-            annotation("javax.enterprise.context.NormalScope")
-            annotation("javax.enterprise.inject.Vetoed")
+            annotation("jakarta.enterprise.context.NormalScope")
+            annotation("jakarta.enterprise.inject.Vetoed")
         }
 
         configure<NoArgExtension> {
-            annotation("javax.enterprise.context.NormalScope")
-            annotation("javax.enterprise.inject.Vetoed")
+            annotation("jakarta.enterprise.context.NormalScope")
+            annotation("jakarta.enterprise.inject.Vetoed")
         }
 
         tasks.withType<KotlinCompile> {

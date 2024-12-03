@@ -22,22 +22,22 @@ import java.util.Base64
 import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
-import javax.annotation.Priority
-import javax.enterprise.context.ApplicationScoped
-import javax.enterprise.inject.Alternative
-import javax.inject.Inject
-import javax.interceptor.Interceptor
-import javax.json.JsonObject
-import javax.security.enterprise.credential.BasicAuthenticationCredential
-import javax.security.enterprise.credential.Credential
-import javax.security.enterprise.identitystore.CredentialValidationResult
-import javax.security.enterprise.identitystore.IdentityStore
-import javax.security.enterprise.identitystore.IdentityStoreHandler
-import javax.ws.rs.client.ClientBuilder
-import javax.ws.rs.client.Entity
-import javax.ws.rs.client.WebTarget
-import javax.ws.rs.core.Form
-import javax.ws.rs.core.Response
+import jakarta.annotation.Priority
+import jakarta.enterprise.context.ApplicationScoped
+import jakarta.enterprise.inject.Alternative
+import jakarta.inject.Inject
+import jakarta.interceptor.Interceptor
+import jakarta.json.JsonObject
+import jakarta.security.enterprise.credential.BasicAuthenticationCredential
+import jakarta.security.enterprise.credential.Credential
+import jakarta.security.enterprise.identitystore.CredentialValidationResult
+import jakarta.security.enterprise.identitystore.IdentityStore
+import jakarta.security.enterprise.identitystore.IdentityStoreHandler
+import jakarta.ws.rs.client.ClientBuilder
+import jakarta.ws.rs.client.Entity
+import jakarta.ws.rs.client.WebTarget
+import jakarta.ws.rs.core.Form
+import jakarta.ws.rs.core.Response
 
 @ApplicationScoped
 @Alternative
@@ -51,7 +51,7 @@ class BasicIdentityStore protected constructor(
 
     private val map: ConcurrentMap<String, Pair<JsonWebStructureCredential, String?>> = ConcurrentHashMap()
     private val salt = SecureRandom().run { byteArrayOf().also { nextBytes(it) } }
-
+    
     @Inject
     protected constructor(
             identityStores: IdentityStoreHandler,

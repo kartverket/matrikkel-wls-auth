@@ -6,11 +6,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.jwt.Claims
 import org.jose4j.jwt.consumer.JwtConsumer
 import org.slf4j.LoggerFactory
-import javax.enterprise.context.ApplicationScoped
-import javax.inject.Inject
-import javax.security.enterprise.credential.Credential
-import javax.security.enterprise.identitystore.CredentialValidationResult
-import javax.security.enterprise.identitystore.IdentityStore
+import jakarta.enterprise.context.ApplicationScoped
+import jakarta.inject.Inject
+import jakarta.security.enterprise.credential.Credential
+import jakarta.security.enterprise.identitystore.CredentialValidationResult
+import jakarta.security.enterprise.identitystore.IdentityStore
 
 @ApplicationScoped
 class BearerIdentityStore @Inject constructor(
