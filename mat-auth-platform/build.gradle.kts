@@ -9,7 +9,7 @@ dependencies {
         api("io.arrow-kt:arrow-fx-coroutines:0.11.0")
         api("io.arrow-kt:arrow-optics:0.11.0")
         api("io.arrow-kt:arrow-meta:0.11.0")
-        api("org.slf4j:slf4j-api:2.0.9")
+        api("org.slf4j:slf4j-api:2.0.17")
         api("org.eclipse.microprofile.config:microprofile-config-api:3.1")
         api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api:2.1")
         api("jakarta.security.enterprise:jakarta.security.enterprise-api:2.0.0")
