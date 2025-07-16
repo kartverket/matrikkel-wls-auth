@@ -5,10 +5,10 @@ plugins {
 dependencies {
     constraints {
         api("org.bitbucket.b_c:jose4j:0.9.6") //Json Web Token (JWT)
-        api("io.arrow-kt:arrow-core:0.11.0")
-        api("io.arrow-kt:arrow-fx-coroutines:0.11.0")
-        api("io.arrow-kt:arrow-optics:0.11.0")
-        api("io.arrow-kt:arrow-meta:0.11.0")
+        api("io.arrow-kt:arrow-core:2.1.2")
+        api("io.arrow-kt:arrow-fx-coroutines:2.1.2")
+        api("io.arrow-kt:arrow-optics:2.1.2")
+        api("io.arrow-kt:arrow-meta:2.1.2")
         api("org.slf4j:slf4j-api:2.0.9")
         api("org.eclipse.microprofile.config:microprofile-config-api:3.1")
         api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api:2.1")
