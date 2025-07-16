@@ -19,7 +19,7 @@ dependencies {
         api("jakarta.annotation:jakarta.annotation-api:2.0.0")
         api("jakarta.ejb:jakarta.ejb-api:4.0.1")
         api("org.jboss.weld:weld-api")
-        api("com.google.guava:guava:32.1.2-jre")
+        api("com.google.guava:guava:33.4.8-jre")
         api("jakarta.security.jacc:jakarta.security.jacc-api:1.6.1")
         api("jakarta.security.auth.message:jakarta.security.auth.message-api:2.0.0-RC1")
         api("jakarta.json:jakarta.json-api:2.0.2")
