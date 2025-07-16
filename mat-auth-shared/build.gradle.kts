@@ -21,7 +21,7 @@ dependencies {
 
     compileOnly("org.glassfish.soteria:jakarta.security.enterprise:2.0.0")
 
-    runtimeOnly("org.jboss.logging:jboss-logging:3.4.3.Final")
+    runtimeOnly("org.jboss.logging:jboss-logging:3.6.1.Final")
 }
 
 java {
