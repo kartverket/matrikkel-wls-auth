@@ -9,13 +9,9 @@ dependencies {
     compileOnlyApi("jakarta.annotation:jakarta.annotation-api")
     compileOnlyApi("jakarta.enterprise:jakarta.enterprise.cdi-api")
     compileOnlyApi("jakarta.security.auth.message:jakarta.security.auth.message-api")
-
     compileOnlyApi("jakarta.security.enterprise:jakarta.security.enterprise-api")
-
     compileOnlyApi("org.eclipse.microprofile.config:microprofile-config-api")
-
     compileOnlyApi("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api")
-
     compileOnlyApi("org.slf4j:slf4j-api")
 }
 
