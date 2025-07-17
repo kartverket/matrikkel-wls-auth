@@ -1,8 +1,5 @@
 package no.statkart.matrikkel.auth.shared
 
-import java.security.AccessController
-import java.security.PrivilegedAction
-import java.util.*
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import jakarta.enterprise.context.spi.CreationalContext
@@ -13,52 +10,32 @@ import jakarta.security.enterprise.credential.Credential
 import jakarta.security.enterprise.identitystore.CredentialValidationResult
 import jakarta.security.enterprise.identitystore.IdentityStore
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler
+import java.util.IdentityHashMap
 
 abstract class AbstractIdentityStoreHandler protected constructor() : IdentityStoreHandler {
-
     private lateinit var authenticationIdentityStores: List<IdentityStore>
     private lateinit var authorizationIdentityStores: List<IdentityStore>
+
     @field:Inject
     private lateinit var bm: BeanManager
-    private val identityStoreInstances = IdentityHashMap<IdentityStore, Pair<Bean<IdentityStore>, CreationalContext<IdentityStore>>>()
+    private val identityStoreInstances =
+        IdentityHashMap<IdentityStore, Pair<Bean<IdentityStore>, CreationalContext<IdentityStore>>>()
 
     override fun validate(credential: Credential?): CredentialValidationResult {
-        val (identityStore, validation) = authenticationIdentityStores
-            .fold(null as IdentityStore? to CredentialValidationResult.NOT_VALIDATED_RESULT) { acc, identityStore ->
-                val (_, validation) = acc
-                when (validation.status) {
-                    CredentialValidationResult.Status.NOT_VALIDATED, null -> identityStore.validate(credential)?.let { identityStore to it } ?: acc
-                    CredentialValidationResult.Status.INVALID -> acc
-                    CredentialValidationResult.Status.VALID -> identityStore.validate(credential)
-                        ?.takeIf { it.status == CredentialValidationResult.Status.INVALID }
-                        ?.let { identityStore to it }
-                        ?: acc
-                }
+        val validation = authenticationIdentityStores.validate(credential)
+        return when (validation) {
+            is IdentityStoreValidationResult.Invalid -> validation.status
+            is IdentityStoreValidationResult.Valid -> {
+                val groups: Set<String> = authorizationIdentityStores.extractProvidedGroups(validation)
+                CredentialValidationResult(
+                    validation.status.identityStoreId,
+                    validation.status.callerPrincipal,
+                    validation.status.callerDn,
+                    validation.status.callerUniqueId,
+                    groups
+                )
             }
-
-        if (validation.status != CredentialValidationResult.Status.VALID) {
-            return validation
         }
-
-        val groups : Set<String> = AccessController.doPrivileged(PrivilegedAction<Set<String>> {
-            authorizationIdentityStores
-                .mapNotNull { it.getCallerGroups(validation) }.flatten().toSet()
-                .let { groups ->
-                    if (identityStore!!.validationTypes().contains(IdentityStore.ValidationType.PROVIDE_GROUPS)) {
-                        identityStore.getCallerGroups(validation)?.let { groups.union(it) }
-                    } else {
-                        groups
-                    }
-                }
-        })
-
-        return CredentialValidationResult(
-            validation.identityStoreId,
-            validation.callerPrincipal,
-            validation.callerDn,
-            validation.callerUniqueId,
-            groups
-        )
     }
 
     @PostConstruct
@@ -99,6 +76,45 @@ abstract class AbstractIdentityStoreHandler protected constructor() : IdentitySt
             val (bean, ctx) = reference
             bean.destroy(identityStore, ctx)
             instances.remove()
+        }
+    }
+
+    companion object {
+        fun List<IdentityStore>.validate(credential: Credential?): IdentityStoreValidationResult {
+            var currentResult: IdentityStoreValidationResult = IdentityStoreValidationResult.NOT_VALIDATED
+            for (identityStore in this) {
+                val newResult = identityStore.validate(credential) ?: continue
+
+                if (newResult.status == CredentialValidationResult.Status.INVALID) {
+                    return IdentityStoreValidationResult.INVALID
+                }
+
+                if (currentResult is IdentityStoreValidationResult.Valid) {
+                    continue
+                }
+
+                currentResult = IdentityStoreValidationResult.of(identityStore, newResult)
+            }
+
+            return currentResult
+        }
+
+        fun List<IdentityStore>.extractProvidedGroups(validation: IdentityStoreValidationResult.Valid): Set<String> {
+            val groups = this.mapNotNull { it.getCallerGroups(validation.status) }
+                .flatten()
+                .toSet()
+
+            val provideExtraGroups = validation.identityStore
+                .validationTypes()
+                ?.contains(IdentityStore.ValidationType.PROVIDE_GROUPS)
+                ?: false
+
+            if (provideExtraGroups) {
+                val extraGroups = validation.identityStore.getCallerGroups(validation.status)
+                return groups.union(extraGroups)
+            }
+
+            return groups
         }
     }
 }

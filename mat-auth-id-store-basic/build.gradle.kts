@@ -9,6 +9,7 @@ dependencies {
     compileOnly(project(":mat-auth-shared"))
     compileOnly("jakarta.security.enterprise:jakarta.security.enterprise-api")
     compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 }
 
 java {

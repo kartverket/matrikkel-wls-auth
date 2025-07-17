@@ -1,7 +1,8 @@
 import org.gradle.api.tasks.SourceSet.TEST_SOURCE_SET_NAME
 import org.jetbrains.kotlin.allopen.gradle.AllOpenExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.findKaptConfiguration
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.jetbrains.kotlin.noarg.gradle.NoArgExtension
 import org.jetbrains.kotlin.util.prefixIfNot
 
@@ -43,9 +44,9 @@ subprojects {
             annotation("jakarta.enterprise.inject.Vetoed")
         }
 
-        tasks.withType<KotlinCompile> {
-            kotlinOptions {
-                jvmTarget = "11"
+        tasks.withType<KotlinJvmCompile>().configureEach {
+            compilerOptions {
+                jvmTarget.set(JvmTarget.JVM_17)
             }
         }
     }
@@ -70,8 +71,8 @@ subprojects {
 
     plugins.withType<JavaBasePlugin> {
         configure<JavaPluginExtension> {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
             afterEvaluate {
                 sourceSets.filter { it.name != TEST_SOURCE_SET_NAME }.forEach { sourceSet ->
 
@@ -104,5 +105,4 @@ subprojects {
             }
         }
     }
-
 }

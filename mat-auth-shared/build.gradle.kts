@@ -6,27 +6,34 @@ plugins {
 
 dependencies {
     compileOnlyApi("jakarta.security.enterprise:jakarta.security.enterprise-api")
-    compileOnly("jakarta.security.enterprise:jakarta.security.enterprise-api")
     compileOnlyApi("jakarta.json:jakarta.json-api")
-
     compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
+    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:2.0.1")
 
     api(project(":mat-auth-api"))
     api ("org.bitbucket.b_c:jose4j")
-
-    api ("io.arrow-kt:arrow-fx-coroutines")
-
+    api ("io.arrow-kt:arrow-resilience")
     api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api")
     api("org.eclipse.microprofile.config:microprofile-config-api")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
-    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:2.0.0")
-
-    runtimeOnly("org.jboss.logging:jboss-logging:3.4.3.Final")
+    testApi("jakarta.security.enterprise:jakarta.security.enterprise-api")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("org.eclipse.parsson:parsson")
 }
 
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+    testLogging {
+        events("passed")
+        events("failed")
+    }
 }
 
 publishing {

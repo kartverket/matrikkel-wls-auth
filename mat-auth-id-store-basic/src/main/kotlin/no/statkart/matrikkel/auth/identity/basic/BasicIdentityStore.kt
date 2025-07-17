@@ -1,27 +1,11 @@
 package no.statkart.matrikkel.auth.identity.basic
 
 import arrow.core.Either
-import arrow.core.computations.either
-import arrow.core.getOrHandle
-import arrow.fx.coroutines.Environment
-import arrow.fx.coroutines.Schedule
-import arrow.fx.coroutines.milliseconds
-import arrow.fx.coroutines.retry
-import no.statkart.matrikkel.auth.credential.AuthConfigKeys
-import no.statkart.matrikkel.auth.credential.BasicAuthenticationCredentialExt
-import no.statkart.matrikkel.auth.credential.JsonWebStructureCredential
-import no.statkart.matrikkel.auth.util.jaxrs.readEntity
-import no.statkart.matrikkel.auth.util.jaxrs.suspend
-import org.eclipse.microprofile.config.inject.ConfigProperty
-import org.slf4j.LoggerFactory
-import java.net.URI
-import java.nio.CharBuffer
-import java.security.MessageDigest
-import java.security.SecureRandom
-import java.util.Base64
-import java.util.Optional
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import arrow.core.flatten
+import arrow.core.getOrElse
+import arrow.core.raise.either
+import arrow.resilience.Schedule
+import arrow.resilience.retryRaise
 import jakarta.annotation.Priority
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Alternative
@@ -38,6 +22,23 @@ import jakarta.ws.rs.client.Entity
 import jakarta.ws.rs.client.WebTarget
 import jakarta.ws.rs.core.Form
 import jakarta.ws.rs.core.Response
+import kotlinx.coroutines.runBlocking
+import no.statkart.matrikkel.auth.credential.AuthConfigKeys
+import no.statkart.matrikkel.auth.credential.BasicAuthenticationCredentialExt
+import no.statkart.matrikkel.auth.credential.JsonWebStructureCredential
+import no.statkart.matrikkel.auth.util.jaxrs.readEntity
+import no.statkart.matrikkel.auth.util.jaxrs.suspend
+import org.eclipse.microprofile.config.inject.ConfigProperty
+import org.slf4j.LoggerFactory
+import java.net.URI
+import java.nio.CharBuffer
+import java.security.MessageDigest
+import java.security.SecureRandom
+import java.util.Base64
+import java.util.Optional
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
+import kotlin.time.Duration.Companion.milliseconds
 
 @ApplicationScoped
 @Alternative
@@ -46,26 +47,31 @@ class BasicIdentityStore protected constructor(
     private val tokenTarget: WebTarget,
     private val clientCredential: String?,
     private val identityStores: IdentityStoreHandler,
-    private val env: Environment = Environment()
 ) : IdentityStore {
+    private data class Tokens(
+        val accessToken: JsonWebStructureCredential,
+        val refreshToken: String?,
+    )
 
-    private val map: ConcurrentMap<String, Pair<JsonWebStructureCredential, String?>> = ConcurrentHashMap()
+    private val map: ConcurrentMap<String, Tokens> = ConcurrentHashMap()
     private val salt = SecureRandom().run { byteArrayOf().also { nextBytes(it) } }
-    
+
     @Inject
     protected constructor(
-            identityStores: IdentityStoreHandler,
-            @ConfigProperty(name = AuthConfigKeys.TOKEN_URL) tokenURI: URI,
-            @ConfigProperty(name = AuthConfigKeys.CLIENT_ID) clientIdOption: Optional<String>,
-            @ConfigProperty(name = AuthConfigKeys.CLIENT_SECRET) clientSecretOption: Optional<String>
+        identityStores: IdentityStoreHandler,
+        @ConfigProperty(name = AuthConfigKeys.TOKEN_URL) tokenURI: URI,
+        @ConfigProperty(name = AuthConfigKeys.CLIENT_ID) clientIdOption: Optional<String>,
+        @ConfigProperty(name = AuthConfigKeys.CLIENT_SECRET) clientSecretOption: Optional<String>
     ) : this(
-            client.target(tokenURI),
-            clientIdOption.flatMap { clientId ->
-                clientSecretOption.map { clientSecret -> Base64
-                        .getUrlEncoder()
-                        .encodeToString("$clientId:$clientSecret".toByteArray()) }
-            }.orElse(null),
-            identityStores
+        client.target(tokenURI),
+        clientIdOption.flatMap { clientId ->
+            clientSecretOption.map { clientSecret ->
+                Base64
+                    .getUrlEncoder()
+                    .encodeToString("$clientId:$clientSecret".toByteArray())
+            }
+        }.orElse(null),
+        identityStores
     )
 
     fun validate(credential: BasicAuthenticationCredentialExt): CredentialValidationResult {
@@ -77,21 +83,21 @@ class BasicIdentityStore protected constructor(
         }
         val cachedTokens = map[credentialKey]
         if (cachedTokens != null) {
-            val cachedValidationResult = cachedTokens.let { (accessToken, _) -> identityStores.validate(accessToken) }.takeIf { it?.status == CredentialValidationResult.Status.VALID }
+            val cachedValidationResult = identityStores.validate(cachedTokens.accessToken)
             if (cachedValidationResult?.status == CredentialValidationResult.Status.VALID) {
                 return cachedValidationResult
             }
         }
 
         val tokens = map.compute(credentialKey) { _, v ->
-            env.unsafeRunSync {
-                val refreshedTokens = v?.second?.let {
-                    fetchTokens(it, this::refreshTokenResult).getOrHandle {
+            runBlocking {
+                val refreshedTokens = v?.refreshToken?.let {
+                    fetchTokens(it, this@BasicIdentityStore::refreshTokenResult).getOrElse {
                         logger.debug("Failed to refresh token: {}", it)
                         null
                     }
                 }
-                refreshedTokens ?: fetchTokens(credential, this::fetchTokenResult).getOrHandle {
+                refreshedTokens ?: fetchTokens(credential, this@BasicIdentityStore::fetchTokenResult).getOrElse {
                     logger.debug("Failed to fetch access token for {}:", credential.caller, it)
                     null
                 }
@@ -101,7 +107,7 @@ class BasicIdentityStore protected constructor(
         return if (tokens == null) {
             CredentialValidationResult.INVALID_RESULT
         } else {
-            val validationResult = identityStores.validate(tokens.first)
+            val validationResult = identityStores.validate(tokens.accessToken)
             if (validationResult.status != CredentialValidationResult.Status.VALID) {
                 map.remove(credentialKey, tokens)
             }
@@ -110,47 +116,72 @@ class BasicIdentityStore protected constructor(
     }
 
     override fun validate(credential: Credential?): CredentialValidationResult {
-        return when(credential) {
+        return when (credential) {
             is BasicAuthenticationCredentialExt -> validate(credential)
-            is BasicAuthenticationCredential -> validate(BasicAuthenticationCredentialExt(credential.caller, credential.password))
+            is BasicAuthenticationCredential -> validate(
+                BasicAuthenticationCredentialExt(
+                    credential.caller,
+                    credential.password
+                )
+            )
+
             else -> CredentialValidationResult.NOT_VALIDATED_RESULT
         }
     }
 
-    private suspend fun <A> fetchTokens(credential: A, fetch: suspend (A) -> Either<Response, JsonObject>) : Either<Throwable, Pair<JsonWebStructureCredential, String?>> = either {
-        val tokenResult = !Either.catch {
-            retry(Schedule.fibonacci<Either<Response, JsonObject>>(833.milliseconds).and(Schedule.recurs(3))) {
-                fetch(credential)
-            }.getOrHandle { throw IllegalAccessException("Unable to fetch token: $it") }
-        }
-        val accessToken = !Either.catch { tokenResult.getString("access_token") }.map { JsonWebStructureCredential(it, true) }
-        accessToken to tokenResult.getString("refresh_token", null)
+
+    private suspend fun <A> fetchTokens(
+        credential: A,
+        fetch: suspend (A) -> Either<Response, JsonObject>
+    ): Either<Throwable, Tokens> = either {
+        val schedule = Schedule
+            .fibonacci<Throwable>(833.milliseconds)
+            .and(Schedule.recurs(3))
+
+        val tokenResult = schedule.retryRaise { fetch(credential) }
+            .flatten()
+            .mapLeft { IllegalAccessException("Unable to fetch token: $it") }
+            .bind()
+
+        val accessToken = Either
+            .catch { tokenResult.getString("access_token") }
+            .map { JsonWebStructureCredential(it, true) }
+            .bind()
+
+        val refreshToken = tokenResult.getString("refresh_token", null)
+
+        Tokens(accessToken, refreshToken)
     }
 
-    private suspend fun fetchTokenResult(credential: BasicAuthenticationCredentialExt): Either<Response, JsonObject> = tokenTarget
+    private suspend fun fetchTokenResult(credential: BasicAuthenticationCredentialExt): Either<Response, JsonObject> =
+        tokenTarget
             .request()
             .run {
                 if (clientCredential != null) {
                     header("Authorization", "Basic $clientCredential")
                 }
-                val form = Entity.form(Form()
+                val form = Entity.form(
+                    Form()
                         .param("grant_type", "password")
                         .param("username", credential.caller)
-                        .param("password", credential.passwordAsString))
+                        .param("password", credential.passwordAsString)
+                )
                 buildPost(form).suspend().readEntity()
             }
 
     private suspend fun refreshTokenResult(refreshToken: String): Either<Response, JsonObject> = tokenTarget
-            .request()
-            .run {
-                if (clientCredential != null) {
-                    header("Authorization", "Basic $clientCredential")
-                }
-                val form = Entity.form(Form()
-                        .param("grant_type", "refresh_token")
-                        .param("refresh_token", refreshToken))
-                buildPost(form).suspend().readEntity()
+        .request()
+        .run {
+            if (clientCredential != null) {
+                header("Authorization", "Basic $clientCredential")
             }
+            val form = Entity.form(
+                Form()
+                    .param("grant_type", "refresh_token")
+                    .param("refresh_token", refreshToken)
+            )
+            buildPost(form).suspend().readEntity()
+        }
 
 
     companion object {
