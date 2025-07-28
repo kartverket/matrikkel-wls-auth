@@ -29,7 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 withGradle {
-                    sh './gradlew $GRADLE_ARGS clean assemble'
+                    sh './gradlew $GRADLE_ARGS clean test assemble'
                 }
             }
         }
