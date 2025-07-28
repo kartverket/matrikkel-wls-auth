@@ -15,7 +15,7 @@ dependencies {
         api("jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
         api("jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.1")
         api("jakarta.servlet:jakarta.servlet-api:5.0.0")
-        api("jakarta.annotation:jakarta.annotation-api:2.0.0")
+        api("jakarta.annotation:jakarta.annotation-api:3.0.0")
         api("jakarta.ejb:jakarta.ejb-api:4.0.1")
         api("jakarta.security.jacc:jakarta.security.jacc-api:1.6.1")
         api("jakarta.security.auth.message:jakarta.security.auth.message-api:2.0.0-RC1")
