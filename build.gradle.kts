@@ -20,7 +20,7 @@ allprojects {
                 ?.takeIf { it.isNotBlank() }
                 ?.prefixIfNot("-")
                 ?: ""
-        version = "2.0.0$versionQualifier"
+        version = "3.0.0$versionQualifier"
     }
 }
 
