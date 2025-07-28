@@ -9,7 +9,7 @@ pipeline {
     }
 
     tools {
-        jdk 'Java 11 Latest'
+        jdk 'Java 17 Latest'
     }
 
     environment {
