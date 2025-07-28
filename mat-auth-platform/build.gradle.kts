@@ -12,7 +12,7 @@ dependencies {
         api("org.eclipse.microprofile.config:microprofile-config-api:3.1")
         api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api:2.1")
         api("jakarta.security.enterprise:jakarta.security.enterprise-api:2.0.0")
-        api("jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
+        api("jakarta.ws.rs:jakarta.ws.rs-api:4.0.0")
         api("jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.1")
         api("jakarta.servlet:jakarta.servlet-api:5.0.0")
         api("jakarta.annotation:jakarta.annotation-api:2.0.0")
