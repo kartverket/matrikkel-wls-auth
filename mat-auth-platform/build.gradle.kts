@@ -19,7 +19,7 @@ dependencies {
         api("jakarta.ejb:jakarta.ejb-api:4.0.1")
         api("jakarta.security.jacc:jakarta.security.jacc-api:1.6.1")
         api("jakarta.security.auth.message:jakarta.security.auth.message-api:2.0.0-RC1")
-        api("jakarta.json:jakarta.json-api:2.0.2")
+        api("jakarta.json:jakarta.json-api:2.1.3")
 
         api("org.junit.jupiter:junit-jupiter:5.13.4")
         api("org.eclipse.parsson:parsson:1.1.7")
