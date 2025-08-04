@@ -15,6 +15,7 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult
 import jakarta.security.enterprise.identitystore.IdentityStoreHandler
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.slf4j.LoggerFactory
 import java.util.Collections
 
 /**
@@ -31,14 +32,14 @@ class DefaultHttpAuthenticationMechanism @Inject constructor (
     private val credentialExtractorInstance: Instance<HttpCredentialExtractor<*>>,
     authenticationChallengers: Instance<AuthenticationChallenger>
 ) : HttpAuthenticationMechanism {
-
+    private val logger = LoggerFactory.getLogger(DefaultHttpAuthenticationMechanism::class.java)
     private val authenticationChallenger = authenticationChallengers.run { if (isUnsatisfied) null else get() }
 
     override fun validateRequest(
         request: HttpServletRequest,
         response: HttpServletResponse,
         httpMessageContext: HttpMessageContext
-    ): AuthenticationStatus {
+    ): AuthenticationStatus = runCatching {
         if (!httpMessageContext.isProtected) {
             return httpMessageContext.doNothing()
         }
@@ -68,4 +69,6 @@ class DefaultHttpAuthenticationMechanism @Inject constructor (
             AuthenticationStatus.SEND_FAILURE
         }
     }
+        .onFailure { logger.error("[MAT-AUTH] feilet", it) }
+        .getOrThrow()
 }
