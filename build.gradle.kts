@@ -15,12 +15,7 @@ plugins {
 allprojects {
     group = "no.statkart.matrikkel.auth"
     if (version == "unspecified") {
-        val versionQualifier =
-            (properties.getOrDefault("version.qualifier", "SNAPSHOT") as String?)
-                ?.takeIf { it.isNotBlank() }
-                ?.prefixIfNot("-")
-                ?: ""
-        version = "3.0.0$versionQualifier"
+        version = "3-SNAPSHOT"
     }
 }
 
@@ -28,6 +23,21 @@ subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+    }
+
+    plugins.withType<MavenPublishPlugin> {
+        extensions.configure<PublishingExtension> {
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/kartverket/matrikkel-wls-auth")
+                    credentials {
+                        username = System.getenv("GITHUB_ACTOR")
+                        password = System.getenv("GITHUB_TOKEN")
+                    }
+                }
+            }
+        }
     }
 
     plugins.withId("org.jetbrains.kotlin.jvm")  {
