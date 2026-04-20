@@ -10,11 +10,21 @@ dependencies {
     compileOnly("jakarta.security.enterprise:jakarta.security.enterprise-api")
     compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+
+    testImplementation(platform(project(":mat-auth-platform")))
+    testImplementation("io.arrow-kt:arrow-core")
+    testImplementation("io.arrow-kt:arrow-resilience")
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
 publishing {

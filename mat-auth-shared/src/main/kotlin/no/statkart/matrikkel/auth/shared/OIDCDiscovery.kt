@@ -10,7 +10,10 @@ import jakarta.ws.rs.client.ClientBuilder
 import jakarta.ws.rs.client.WebTarget
 import jakarta.ws.rs.core.MediaType
 import jakarta.ws.rs.core.Response
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import no.statkart.matrikkel.auth.credential.AuthConfigKeys
 import no.statkart.matrikkel.auth.util.jaxrs.readEntity
@@ -24,6 +27,7 @@ import kotlin.time.Duration.Companion.milliseconds
 open class OIDCDiscovery(uri: URI) : ConfigSource {
     private val client = ClientBuilder.newBuilder().build()
     private val endpoint: WebTarget = client.target(uri)
+    private val warmupScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private val propertyMap: Either<Throwable, Map<String, String>> by lazy {
         runBlocking(Dispatchers.IO) {
@@ -40,14 +44,17 @@ open class OIDCDiscovery(uri: URI) : ConfigSource {
                         endpoint.uri,
                         it.entries.joinToString(
                             "\n\t", "\n\t", "\n",
-                            transform = { (k, v) -> "$k: $v" })
+                            transform = { (k, v) -> "$k: $v" }
+                        )
                     )
                 }
         }
     }
 
     init {
-        this::propertyMap.get()
+        warmupScope.launch {
+            propertyMap
+        }
     }
 
     override fun getProperties(): Map<String, String> {
