@@ -1,11 +1,7 @@
 package no.statkart.matrikkel.auth.identity.basic
 
 import arrow.core.Either
-import arrow.core.flatten
 import arrow.core.getOrElse
-import arrow.core.raise.either
-import arrow.resilience.Schedule
-import arrow.resilience.retryRaise
 import jakarta.annotation.Priority
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.enterprise.inject.Alternative
@@ -89,14 +85,15 @@ class BasicIdentityStore protected constructor(
             }
         }
 
-        val tokens = map.compute(credentialKey) { _, v ->
+        val tokens = map.compute(credentialKey) { _, currentTokens ->
             runBlocking {
-                val refreshedTokens = v?.refreshToken?.let {
-                    fetchTokens(it, this@BasicIdentityStore::refreshTokenResult).getOrElse {
+                val refreshedTokens = currentTokens?.refreshToken?.let { refreshToken ->
+                    fetchTokens(refreshToken, this@BasicIdentityStore::refreshTokenResult).getOrElse {
                         logger.debug("Failed to refresh token: {}", it)
                         null
                     }
                 }
+
                 refreshedTokens ?: fetchTokens(credential, this@BasicIdentityStore::fetchTokenResult).getOrElse {
                     logger.debug("Failed to fetch access token for {}:", credential.caller, it)
                     null
@@ -133,24 +130,25 @@ class BasicIdentityStore protected constructor(
     private suspend fun <A> fetchTokens(
         credential: A,
         fetch: suspend (A) -> Either<Response, JsonObject>
-    ): Either<Throwable, Tokens> = either {
-        val schedule = Schedule
-            .fibonacci<Throwable>(833.milliseconds)
-            .and(Schedule.recurs(3))
+    ): Either<Throwable, Tokens> {
+        return Either.catch {
+            val tokenResult = retryTokenFetch(initialDelayMillis = 833.milliseconds, retries = 3) {
+                fetch(credential)
+            }.fold(
+                { throwable -> throw IllegalAccessException("Unable to fetch token: $throwable") },
+                { result ->
+                    result.fold(
+                        { response -> throw IllegalAccessException("Unable to fetch token: $response") },
+                        { it }
+                    )
+                }
+            )
 
-        val tokenResult = schedule.retryRaise { fetch(credential) }
-            .flatten()
-            .mapLeft { IllegalAccessException("Unable to fetch token: $it") }
-            .bind()
+            val accessToken = JsonWebStructureCredential(tokenResult.getString("access_token"), true)
+            val refreshToken = tokenResult.getString("refresh_token", null)
 
-        val accessToken = Either
-            .catch { tokenResult.getString("access_token") }
-            .map { JsonWebStructureCredential(it, true) }
-            .bind()
-
-        val refreshToken = tokenResult.getString("refresh_token", null)
-
-        Tokens(accessToken, refreshToken)
+            Tokens(accessToken, refreshToken)
+        }
     }
 
     private suspend fun fetchTokenResult(credential: BasicAuthenticationCredentialExt): Either<Response, JsonObject> =
@@ -182,7 +180,6 @@ class BasicIdentityStore protected constructor(
             )
             buildPost(form).suspend().readEntity()
         }
-
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java.enclosingClass)

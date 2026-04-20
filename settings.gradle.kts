@@ -5,7 +5,7 @@ pluginManagement {
     }
 
     plugins {
-        val kotlinVersion = "2.2.0"
+        val kotlinVersion = "2.2.21"
         id ("org.jetbrains.kotlin.jvm") version kotlinVersion
         id ("org.jetbrains.kotlin.plugin.allopen") version kotlinVersion
         id ("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
