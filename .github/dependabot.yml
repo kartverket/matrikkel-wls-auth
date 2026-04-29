@@ -10,6 +10,10 @@ updates:
       arrow-kt:
         patterns:
           - "io.arrow-kt:arrow-*"
+    ignore:
+      # Disse må samsvare med matrikkelen, så vi ønsker ikke masse dependabot updates her
+      - dependency-name: "jakarta.*"
+        update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: ".github/workflows"
