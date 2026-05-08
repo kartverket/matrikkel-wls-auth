@@ -4,7 +4,7 @@ plugins {
 }
 dependencies {
     constraints {
-        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
         api("org.bitbucket.b_c:jose4j:0.9.6") //Json Web Token (JWT)
         api("io.arrow-kt:arrow-core:2.2.2.1")
         api("io.arrow-kt:arrow-resilience:2.1.2")
