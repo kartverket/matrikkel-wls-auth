@@ -12,6 +12,7 @@ dependencies {
 
     api(project(":mat-auth-api"))
     api ("org.bitbucket.b_c:jose4j")
+    api ("io.arrow-kt:arrow-core")
     api ("io.arrow-kt:arrow-resilience")
     api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api")
     api("org.eclipse.microprofile.config:microprofile-config-api")
