@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: matrikkel-wls-auth
   tags:
-    - internal
+    - public
 spec:
   type: library
   lifecycle: production
