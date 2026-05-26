@@ -22,7 +22,7 @@ dependencies {
         api("jakarta.json:jakarta.json-api:2.0.2")
 
         api("org.junit.jupiter:junit-jupiter:6.1.0")
-        api("org.eclipse.parsson:parsson:1.1.7")
+        api("org.eclipse.parsson:parsson:1.1.9")
     }
 }
 publishing {
