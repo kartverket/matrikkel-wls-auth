@@ -7,8 +7,9 @@ plugins {
 dependencies {
     compileOnlyApi("jakarta.security.enterprise:jakarta.security.enterprise-api")
     compileOnlyApi("jakarta.json:jakarta.json-api")
+    compileOnly("jakarta.inject:jakarta.inject-api")
     compileOnly("jakarta.ws.rs:jakarta.ws.rs-api")
-    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:2.0.1")
+    compileOnly("org.glassfish.soteria:jakarta.security.enterprise:3.0.4")
 
     api(project(":mat-auth-api"))
     api ("org.bitbucket.b_c:jose4j")

@@ -8,6 +8,7 @@ plugins {
 dependencies {
     compileOnlyApi(project(":mat-auth-api"))
     compileOnly(project(":mat-auth-shared"))
+    compileOnly("jakarta.inject:jakarta.inject-api")
     compileOnly("org.bitbucket.b_c:jose4j")
     compileOnly("org.eclipse.microprofile.config:microprofile-config-api")
 }
