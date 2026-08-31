@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     compileOnlyApi(project(":mat-auth-api"))
+    compileOnly("jakarta.inject:jakarta.inject-api")
 }
 
 java {
