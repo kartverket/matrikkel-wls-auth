@@ -13,7 +13,7 @@ dependencies {
         api("org.bitbucket.b_c:jose4j:0.9.6") //Json Web Token (JWT)
         api("io.arrow-kt:arrow-core:2.2.3")
         api("io.arrow-kt:arrow-resilience:2.2.3")
-        api("org.slf4j:slf4j-api:2.0.18")
+        api("org.slf4j:slf4j-api:2.0.19")
         api("org.eclipse.microprofile.config:microprofile-config-api:3.1.1")
         api("org.eclipse.microprofile.jwt:microprofile-jwt-auth-api:2.2")
 
