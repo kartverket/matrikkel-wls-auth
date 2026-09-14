@@ -10,7 +10,7 @@ dependencies {
 
     constraints {
         api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
-        api("org.bitbucket.b_c:jose4j:0.9.6") //Json Web Token (JWT)
+        api("org.bitbucket.b_c:jose4j:0.9.7") //Json Web Token (JWT)
         api("io.arrow-kt:arrow-core:2.2.3")
         api("io.arrow-kt:arrow-resilience:2.2.3")
         api("org.slf4j:slf4j-api:2.0.19")
